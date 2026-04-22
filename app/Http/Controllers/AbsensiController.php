@@ -24,11 +24,10 @@ class AbsensiController extends Controller
             return redirect()->back()->with('error', 'Tidak dapat melakukan absensi di hari Minggu.');
         }
 
-        // --- PERBAIKAN: Join dengan relasi_guru untuk mendapatkan id_guru ---
         $guru = DB::table('guru')
             ->join('relasi_guru', 'guru.id', '=', 'relasi_guru.id_guru')
             ->where('relasi_guru.id_user', Auth::id())
-            ->select('guru.*') // Mengambil semua kolom dari tabel guru
+            ->select('guru.*')
             ->first();
         
         if (!$guru) {
@@ -41,7 +40,7 @@ class AbsensiController extends Controller
                     DB::table('absensi_murid')->updateOrInsert(
                         ['id_murid' => $id_murid, 'tanggal' => Carbon::now()->format('Y-m-d')],
                         [
-                            'id_guru'    => $guru->id, // Menggunakan ID asli dari tabel guru
+                            'id_guru'    => $guru->id, 
                             'status'     => $data['status'],
                             'keterangan' => $data['keterangan'] ?? null,
                             'updated_at' => now(),
