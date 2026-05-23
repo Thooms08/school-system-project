@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Wali Murid </title>
+    <title>{{ __('dashboard.guardian_data_title') }}</title>
     @if(isset($sekolah->logo))
     <link rel="icon" type="image/png" href="{{ asset($sekolah->logo) }}">
     @else
@@ -37,19 +37,19 @@
                 <div class="d-flex align-items-center justify-content-between mb-4 mt-2">
                     <div class="d-flex align-items-center">
                         <button type="button" id="sidebarCollapse" class="btn"><i class="bi bi-list fs-4"></i></button>
-                        <h4 class="ms-3 mb-0 fw-bold text-success">Data Wali Murid</h4>
+                        <h4 class="ms-3 mb-0 fw-bold text-success">{{ __('dashboard.guardian_data_title') }}</h4>
                     </div>
                 </div>
 
                 <div class="card p-3 mb-4">
                     <div class="row align-items-center">
                         <div class="col-md-6">
-                            <p class="text-muted small mb-0">Cari berdasarkan Nama Murid, Ayah, Ibu, atau No. HP</p>
+                            <p class="text-muted small mb-0">{{ __('dashboard.search_guardian') }}</p>
                         </div>
                         <div class="col-md-6 mt-2 mt-md-0">
                             <div class="input-group">
                                 <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search"></i></span>
-                                <input type="text" id="search-input" class="form-control search-box border-start-0" placeholder="Ketik kata kunci...">
+                                <input type="text" id="search-input" class="form-control search-box border-start-0" placeholder="{{ __('dashboard.search_placeholder') }}">
                             </div>
                         </div>
                     </div>
@@ -60,10 +60,10 @@
                         <table class="table align-middle">
                             <thead>
                                 <tr>
-                                    <th>Nama Murid</th>
-                                    <th>Nama Ayah</th>
-                                    <th>Nama Ibu</th>
-                                    <th>No. HP</th>
+                                    <th>{{ __('dashboard.student_name') }}</th>
+                                    <th>{{ __('dashboard.father_name_col') }}</th>
+                                    <th>{{ __('dashboard.mother_name_col') }}</th>
+                                    <th>{{ __('dashboard.phone_number') }}</th>
                                 </tr>
                             </thead>
                             <tbody id="table-body">
@@ -76,7 +76,7 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="4" class="text-center py-4 text-muted">Belum ada data wali murid</td>
+                                    <td colspan="4" class="text-center py-4 text-muted">{{ __('dashboard.no_guardian_data_yet') }}</td>
                                 </tr>
                                 @endforelse
                             </tbody>

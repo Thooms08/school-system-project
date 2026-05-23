@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Konfirmasi Pelanggaran</title>
+    <title>{{ __('dashboard.violation_confirmation_title') }}</title>
     @if(isset($sekolah->logo))
     <link rel="icon" type="image/png" href="{{ asset($sekolah->logo) }}">
     @else
@@ -44,8 +44,8 @@
                         <i class="bi bi-list fs-4"></i>
                     </button>
                     <div>
-                        <h4 class="fw-bold mb-0">Konfirmasi Pelanggaran</h4>
-                        <p class="text-muted small mb-0">Validasi laporan pelanggaran dari guru</p>
+                        <h4 class="fw-bold mb-0">{{ __('dashboard.violation_confirmation_title') }}</h4>
+                        <p class="text-muted small mb-0">{{ __('dashboard.violation_confirmation_subtitle') }}</p>
                     </div>
                 </div>
             </div>
@@ -64,7 +64,7 @@
                         <div class="card-body p-4">
                             <div class="d-flex justify-content-between mb-3">
                                 <span class="badge badge-pending px-3 py-2 rounded-pill small">
-                                    <i class="bi bi-clock-history me-1"></i> Menunggu
+                                    <i class="bi bi-clock-history me-1"></i> {{ __('dashboard.waiting_status') }}
                                 </span>
                                 <small class="text-muted">{{ date('d/m/Y H:i', strtotime($item->created_at)) }}</small>
                             </div>
@@ -75,24 +75,24 @@
                             </p>
                             
                             <div class="bg-light p-3 rounded-3 mb-4">
-                                <small class="text-muted d-block mb-1">Keterangan:</small>
-                                <p class="mb-0 small text-dark italic">"{{ $item->keterangan ?? 'Tidak ada keterangan' }}"</p>
+                                <small class="text-muted d-block mb-1">{{ __('dashboard.notes_label_short') }}</small>
+                                <p class="mb-0 small text-dark italic">"{{ $item->keterangan ?? __('dashboard.no_notes_provided') }}"</p>
                             </div>
 
                             <div class="row g-2">
                                 <div class="col-6">
                                     <form action="{{ route('admin.pelanggaran.approve', $item->id) }}" method="POST">
                                         @csrf
-                                        <button type="submit" class="btn btn-confirm w-100 py-2" onclick="return confirm('Konfirmasi pelanggaran ini?')">
-                                            <i class="bi bi-check-lg me-1"></i> Terima
+                                        <button type="submit" class="btn btn-confirm w-100 py-2" onclick="return confirm(@json(__('dashboard.confirm_violation_prompt')))">
+                                            <i class="bi bi-check-lg me-1"></i> {{ __('dashboard.accept_btn') }}
                                         </button>
                                     </form>
                                 </div>
                                 <div class="col-6">
                                     <form action="{{ route('admin.pelanggaran.reject', $item->id) }}" method="POST">
                                         @csrf
-                                        <button type="submit" class="btn btn-reject w-100 py-2" onclick="return confirm('Tolak laporan ini?')">
-                                            <i class="bi bi-x-lg me-1"></i> Tolak
+                                        <button type="submit" class="btn btn-reject w-100 py-2" onclick="return confirm(@json(__('dashboard.reject_report_prompt')))">
+                                            <i class="bi bi-x-lg me-1"></i> {{ __('dashboard.reject_btn') }}
                                         </button>
                                     </form>
                                 </div>
@@ -104,8 +104,8 @@
                 <div class="col-12 text-center py-5">
                     <div class="bg-white rounded-4 p-5 shadow-sm d-inline-block">
                         <i class="bi bi-shield-check text-success display-1"></i>
-                        <h5 class="mt-4 fw-bold">Semua Bersih!</h5>
-                        <p class="text-muted mb-0">Tidak ada laporan pelanggaran yang perlu dikonfirmasi saat ini.</p>
+                        <h5 class="mt-4 fw-bold">{{ __('dashboard.all_clean_title') }}</h5>
+                        <p class="text-muted mb-0">{{ __('dashboard.no_pending_violations') }}</p>
                     </div>
                 </div>
                 @endforelse

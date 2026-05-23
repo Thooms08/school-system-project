@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Keaktifan Murid</title>
+    <title>{{ __('dashboard.activeness_report_title') }}</title>
     @if(isset($sekolah->logo))
     <link rel="icon" type="image/png" href="{{ asset($sekolah->logo) }}">
     @else
@@ -38,7 +38,7 @@
             <div class="d-flex align-items-center mb-4">
                 <button type="button" id="sidebarCollapse" class="btn"><i class="bi bi-list fs-4"></i></button>
                 <div class="ms-3">
-                    <h4 class="mb-0 fw-bold text-dark">Laporan Keaktifan Murid</h4>
+                    <h4 class="mb-0 fw-bold text-dark">{{ __('dashboard.activeness_report_title') }}</h4>
                     <p class="text-muted small mb-0">Pantau progres keaktifan harian seluruh murid</p>
                 </div>
             </div>
@@ -46,16 +46,16 @@
             <div class="card p-4 mb-4">
                 <form action="{{ route('admin.keaktifan.index') }}" method="GET" class="row g-3 align-items-end">
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">Pilih Kelas</label>
+                        <label class="form-label fw-bold">{{ __('dashboard.select_class_label') }}</label>
                         <select name="id_kelas" class="form-select border-success shadow-none" required>
-                            <option value="">-- Pilih Kelas --</option>
+                            <option value="">{{ __('dashboard.select_class_option2') }}</option>
                             @foreach($kelas as $k)
                                 <option value="{{ $k->id }}" {{ $kelasId == $k->id ? 'selected' : '' }}>{{ $k->nama_kelas }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">Pilih Tanggal</label>
+                        <label class="form-label fw-bold">{{ __('dashboard.date_filter') }}</label>
                         <input type="date" name="tanggal" class="form-control border-success shadow-none" value="{{ $tanggal }}" required>
                     </div>
                     <div class="col-md-4">
@@ -68,14 +68,14 @@
 
             <div class="card p-0 overflow-hidden">
                 <div class="card-header bg-white p-4 border-0">
-                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-table me-2 text-success"></i>Data Keaktifan</h5>
+                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-table me-2 text-success"></i>{{ __('dashboard.activeness_data_heading') }}</h5>
                 </div>
                 <div class="table-responsive px-4 pb-4">
                     <table class="table table-hover align-middle">
                         <thead>
                             <tr>
-                                <th class="py-3">Nama Murid</th>
-                                <th class="py-3">Nama Keaktifan</th>
+                                <th class="py-3">{{ __('dashboard.student_col') }}</th>
+                                <th class="py-3">{{ __('dashboard.activity_name_col') }}</th>
                                 <th class="py-3 text-center">Status</th>
                                 <th class="py-3">Tanggal</th>
                                 <th class="py-3 text-center">Dokumentasi</th>
@@ -89,9 +89,9 @@
                                     <td>{{ $data->nama_keaktifan }}</td>
                                     <td class="text-center">
                                         @if($data->is_active)
-                                            <i class="bi bi-check-circle-fill text-success status-icon" title="Aktif"></i>
+                                            <i class="bi bi-check-circle-fill text-success status-icon" title="{{ __('dashboard.active_status') }}"></i>
                                         @else
-                                            <i class="bi bi-x-circle-fill text-danger status-icon" title="Tidak Aktif"></i>
+                                            <i class="bi bi-x-circle-fill text-danger status-icon" title="{{ __('dashboard.inactive_status') }}"></i>
                                         @endif
                                     </td>
                                     <td>{{ date('d/m/Y', strtotime($data->tanggal)) }}</td>
@@ -113,7 +113,7 @@
                                 <tr>
                                     <td colspan="5" class="text-center py-5 text-muted">
                                         <i class="bi bi-arrow-up-circle fs-1 d-block mb-2"></i>
-                                        Silakan pilih kelas dan tanggal terlebih dahulu.
+                                        {{ __('dashboard.select_class_date_first') }}
                                     </td>
                                 </tr>
                             @endif
@@ -129,7 +129,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content shadow-lg">
             <div class="modal-header border-0 pb-0">
-                <h6 class="modal-title fw-bold" id="modalTitle">Dokumentasi Keaktifan</h6>
+                <h6 class="modal-title fw-bold" id="modalTitle">{{ __('dashboard.activity_documentation') }}</h6>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-4 text-center">

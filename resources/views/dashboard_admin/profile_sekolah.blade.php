@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile Sekolah</title>
+    <title>{{ __('dashboard.school_profile') }}</title>
     @if(isset($sekolah->logo))
     <link rel="icon" type="image/png" href="{{ asset($sekolah->logo) }}">
     @else
@@ -33,11 +33,11 @@
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div class="d-flex align-items-center">
                         <button type="button" id="sidebarCollapse" class="btn btn-success me-3"><i class="bi bi-list"></i></button>
-                        <h4 class="fw-bold mb-0 text-success">Kelola Profile Sekolah</h4>
+                        <h4 class="fw-bold mb-0 text-success">{{ __('dashboard.school_profile') }}</h4>
                     </div>
                     @if($profiles->count() == 0)
                     <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalTambah">
-                        <i class="bi bi-plus-lg me-2"></i>Tambah Profile
+                        <i class="bi bi-plus-lg me-2"></i>{{ __('dashboard.add_profile') }}
                     </button>
                     @endif
                 </div>
@@ -64,11 +64,11 @@
                         <table class="table table-hover align-middle">
                             <thead>
                                 <tr>
-                                    <th>Logo</th>
-                                    <th>Sekolah & NIS</th>
-                                    <th>Kontak</th>
-                                    <th>Akreditasi</th>
-                                    <th>Aksi</th>
+                                    <th>{{ __('dashboard.logo') }}</th>
+                                    <th>{{ __('dashboard.school_nis') }}</th>
+                                    <th>{{ __('dashboard.contact') }}</th>
+                                    <th>{{ __('dashboard.accreditation') }}</th>
+                                    <th>{{ __('general.action') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -90,7 +90,7 @@
                                         </button>
                                         <form action="{{ route('profile-sekolah.destroy', $p->id) }}" method="POST" class="d-inline">
                                             @csrf @method('DELETE')
-                                            <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus data ini?')">
+                                            <button class="btn btn-sm btn-outline-danger" onclick="return confirm(@json(__('dashboard.confirm_delete_item')))">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </form>
@@ -103,76 +103,76 @@
                                             @csrf @method('PUT')
                                             <div class="modal-content">
                                                 <div class="modal-header bg-success text-white">
-                                                    <h5 class="modal-title">Edit Profile Sekolah</h5>
+                                                    <h5 class="modal-title">{{ __('dashboard.edit_profile') }}</h5>
                                                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                                                 </div>
                                                 <div class="modal-body">
                                                     <div class="row g-3">
                                                         <div class="col-md-6">
-                                                            <label class="form-label">Nama Sekolah</label>
+                                                            <label class="form-label">{{ __('dashboard.school_name') }}</label>
                                                             <input type="text" name="nama_sekolah" class="form-control" value="{{ $p->nama_sekolah }}" required>
                                                         </div>
                                                         <div class="col-md-6">
-                                                            <label class="form-label">NIS</label>
+                                                            <label class="form-label">{{ __('dashboard.nis') }}</label>
                                                             <input type="text" name="nis" class="form-control" value="{{ $p->nis }}" required>
                                                         </div>
                                                         <div class="col-md-6">
-                                                            <label class="form-label fw-bold">Logo Sekolah</label>
+                                                            <label class="form-label fw-bold">{{ __('dashboard.school_logo') }}</label>
                                                             <div id="preview-container-logo-{{ $p->id }}" class="mb-2 p-2 border rounded bg-light text-center">
                                                                 @if($p->logo)
                                                                     <img src="{{ asset($p->logo) }}" class="img-thumbnail mb-2" style="height: 100px;">
                                                                     <button type="button" class="btn btn-sm btn-danger d-block mx-auto" onclick="ajaxDeleteImage('{{ $p->id }}', 'logo')">
-                                                                        <i class="bi bi-x-circle me-1"></i> Hapus Logo
+                                                                        <i class="bi bi-x-circle me-1"></i> {{ __('dashboard.delete_logo') }}
                                                                     </button>
                                                                 @else
-                                                                    <small class="text-muted d-block py-3">Belum ada logo</small>
+                                                                    <small class="text-muted d-block py-3">{{ __('dashboard.no_logo') }}</small>
                                                                 @endif
                                                             </div>
                                                             <input type="file" name="logo" class="form-control">
                                                         </div>
 
                                                         <div class="col-md-6">
-                                                            <label class="form-label fw-bold">Foto Sekolah Utama</label>
+                                                            <label class="form-label fw-bold">{{ __('dashboard.school_photo') }}</label>
                                                             <div id="preview-container-foto-{{ $p->id }}" class="mb-2 p-2 border rounded bg-light text-center">
                                                                 @if($p->foto_sekolah)
                                                                     <img src="{{ asset($p->foto_sekolah) }}" class="img-thumbnail mb-2" style="height: 100px; width: 100%; object-fit: cover;">
                                                                     <button type="button" class="btn btn-sm btn-danger d-block mx-auto" onclick="ajaxDeleteImage('{{ $p->id }}', 'foto_sekolah')">
-                                                                        <i class="bi bi-x-circle me-1"></i> Hapus Foto
+                                                                        <i class="bi bi-x-circle me-1"></i> {{ __('dashboard.delete_photo') }}
                                                                     </button>
                                                                 @else
-                                                                    <small class="text-muted d-block py-3">Belum ada foto sekolah</small>
+                                                                    <small class="text-muted d-block py-3">{{ __('dashboard.no_photo') }}</small>
                                                                 @endif
                                                             </div>
                                                             <input type="file" name="foto_sekolah" class="form-control">
                                                         </div>
                                                         <div class="col-md-6">
-                                                            <label class="form-label">Email</label>
+                                                            <label class="form-label">{{ __('general.email') }}</label>
                                                             <input type="email" name="email" class="form-control" value="{{ $p->email }}" required>
                                                         </div>
                                                         <div class="col-md-6">
-                                                            <label class="form-label">Nomor HP</label>
+                                                            <label class="form-label">{{ __('dashboard.phone_number') }}</label>
                                                             <input type="text" name="no_hp" class="form-control" value="{{ $p->no_hp }}">
                                                         </div>
                                                         <div class="col-md-6">
-                                                            <label class="form-label">Akreditasi</label>
+                                                            <label class="form-label">{{ __('dashboard.accreditation') }}</label>
                                                             <input type="text" name="akreditasi" class="form-control" value="{{ $p->akreditasi }}">
                                                         </div>
                                                         <div class="col-md-6">
-                                                            <label class="form-label">Google Maps Link</label>
+                                                            <label class="form-label">{{ __('dashboard.maps_link') }}</label>
                                                             <input type="text" name="tautan_google_maps" class="form-control" value="{{ $p->tautan_google_maps }}">
                                                         </div>
                                                         <div class="col-12">
-                                                            <label class="form-label">Deskripsi</label>
+                                                            <label class="form-label">{{ __('general.description') }}</label>
                                                             <textarea name="deskripsi" class="form-control" rows="3">{{ $p->deskripsi }}</textarea>
                                                         </div>
                                                         <div class="col-12">
-                                                            <label class="form-label">Alamat</label>
+                                                            <label class="form-label">{{ __('general.address') }}</label>
                                                             <textarea name="alamat" class="form-control" rows="2">{{ $p->alamat }}</textarea>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="submit" class="btn btn-success w-100">Simpan Perubahan</button>
+                                                    <button type="submit" class="btn btn-success w-100">{{ __('general.save_changes') }}</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -193,23 +193,23 @@
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header bg-success text-white">
-                        <h5 class="modal-title">Tambah Profile Sekolah</h5>
+                        <h5 class="modal-title">{{ __('dashboard.add_profile_title') }}</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body row g-3">
-                        <div class="col-md-6"><label>Nama Sekolah</label><input type="text" name="nama_sekolah" class="form-control" required></div>
-                        <div class="col-md-6"><label>NIS</label><input type="text" name="nis" class="form-control" required></div>
-                        <div class="col-md-6"><label>Logo</label><input type="file" name="logo" class="form-control" required></div>
-                        <div class="col-md-6"><label>Foto Sekolah</label><input type="file" name="foto_sekolah" class="form-control" required></div>
-                        <div class="col-md-6"><label>Email</label><input type="email" name="email" class="form-control" required></div>
-                        <div class="col-md-6"><label>No HP</label><input type="text" name="no_hp" class="form-control"></div>
-                        <div class="col-md-6"><label>Akreditasi</label><input type="text" name="akreditasi" class="form-control"></div>
-                        <div class="col-md-6"><label>Maps Link</label><input type="text" name="tautan_google_maps" class="form-control"></div>
-                        <div class="col-12"><label>Deskripsi</label><textarea name="deskripsi" class="form-control" rows="3"></textarea></div>
-                        <div class="col-12"><label>Alamat</label><textarea name="alamat" class="form-control" rows="2"></textarea></div>
+                        <div class="col-md-6"><label>{{ __('dashboard.school_name') }}</label><input type="text" name="nama_sekolah" class="form-control" required></div>
+                        <div class="col-md-6"><label>{{ __('dashboard.nis') }}</label><input type="text" name="nis" class="form-control" required></div>
+                        <div class="col-md-6"><label>{{ __('dashboard.logo') }}</label><input type="file" name="logo" class="form-control" required></div>
+                        <div class="col-md-6"><label>{{ __('dashboard.school_photo') }}</label><input type="file" name="foto_sekolah" class="form-control" required></div>
+                        <div class="col-md-6"><label>{{ __('general.email') }}</label><input type="email" name="email" class="form-control" required></div>
+                        <div class="col-md-6"><label>{{ __('dashboard.phone_number') }}</label><input type="text" name="no_hp" class="form-control"></div>
+                        <div class="col-md-6"><label>{{ __('dashboard.accreditation') }}</label><input type="text" name="akreditasi" class="form-control"></div>
+                        <div class="col-md-6"><label>{{ __('dashboard.maps_link') }}</label><input type="text" name="tautan_google_maps" class="form-control"></div>
+                        <div class="col-12"><label>{{ __('general.description') }}</label><textarea name="deskripsi" class="form-control" rows="3"></textarea></div>
+                        <div class="col-12"><label>{{ __('general.address') }}</label><textarea name="alamat" class="form-control" rows="2"></textarea></div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success w-100">Simpan Data</button>
+                        <button type="submit" class="btn btn-success w-100">{{ __('general.save_data') }}</button>
                     </div>
                 </div>
             </form>
@@ -219,7 +219,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function ajaxDeleteImage(id, type) {
-    if (confirm('Apakah Anda yakin ingin menghapus ' + type.replace('_', ' ') + ' ini?')) {
+    if (confirm(@json(__('dashboard.confirm_delete_image')))) {
         // Tentukan kontainer mana yang akan diupdate berdasarkan type
         const containerId = type === 'logo' ? `preview-container-logo-${id}` : `preview-container-foto-${id}`;
         const container = document.getElementById(containerId);
@@ -235,17 +235,17 @@
         .then(data => {
             if (data.success) {
                 // Ganti isi kontainer pratinjau menjadi kosong
-                container.innerHTML = `<small class="text-muted d-block py-3">Berhasil dihapus. Silakan unggah baru jika diperlukan.</small>`;
+                container.innerHTML = `<small class="text-muted d-block py-3">{{ __('dashboard.deleted_success') }}</small>`;
                 
                 // Opsional: Tampilkan notifikasi kecil
                 alert(data.message);
             } else {
-                alert('Gagal menghapus: ' + data.message);
+                alert(@json(__('dashboard.delete_failed_alert_prefix')) + data.message);
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Terjadi kesalahan saat menghapus gambar.');
+            alert(@json(__('dashboard.image_delete_error_alert')));
         });
     }
 }

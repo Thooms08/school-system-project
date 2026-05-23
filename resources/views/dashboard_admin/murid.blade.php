@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Murid</title>
+    <title>{{ __('dashboard.student_list') }}</title>
     @if(isset($sekolah->logo))
     <link rel="icon" type="image/png" href="{{ asset($sekolah->logo) }}">
     @else
@@ -33,10 +33,10 @@
                 <div class="d-flex align-items-center justify-content-between mb-4 mt-2">
                     <div class="d-flex align-items-center">
                         <button type="button" id="sidebarCollapse" class="btn"><i class="bi bi-list fs-5"></i></button>
-                        <h4 class="ms-3 mb-0 fw-bold text-success">Daftar Murid</h4>
+                        <h4 class="ms-3 mb-0 fw-bold text-success">{{ __('dashboard.student_list') }}</h4>
                     </div>
                     <a href="{{ route('murid.create') }}" class="btn btn-success px-4 fw-bold shadow-sm">
-                        <i class="bi bi-person-plus me-2"></i>+ Murid
+                        <i class="bi bi-person-plus me-2"></i>{{ __('dashboard.add_student_btn') }}
                     </a>
                 </div>
 
@@ -46,10 +46,10 @@
 
                 <div class="card p-3 mb-4">
                     <div class="d-flex justify-content-between align-items-center">
-                        <span class="text-muted small">Kelola data siswa dan pendaftaran baru.</span>
+                        <span class="text-muted small">{{ __('dashboard.manage_students') }}</span>
                         <div class="input-group" style="width: 350px;">
                             <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
-                            <input type="text" id="search-murid" class="form-control border-start-0 ps-0" placeholder="Cari Nama, NISN, atau No. HP...">
+                            <input type="text" id="search-murid" class="form-control border-start-0 ps-0" placeholder="{{ __('dashboard.search_student_nisn') }}">
                         </div>
                     </div>
                 </div>
@@ -59,10 +59,10 @@
                         <table class="table table-hover align-middle">
                             <thead>
                                 <tr>
-                                    <th>Nama Lengkap</th>
-                                    <th>NISN</th>
-                                    <th>Nomor HP</th>
-                                    <th class="text-center">Aksi</th>
+                                    <th>{{ __('dashboard.full_name') }}</th>
+                                    <th>{{ __('dashboard.nisn') }}</th>
+                                    <th>{{ __('dashboard.phone_number') }}</th>
+                                    <th class="text-center">{{ __('general.action') }}</th>
                                 </tr>
                             </thead>
                             <tbody id="table-body">
@@ -80,7 +80,7 @@
                                         </a>
                                         <form action="{{ route('murid.destroy', $m->id) }}" method="POST" class="d-inline">
                                             @csrf @method('DELETE')
-                                            <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus murid ini?')">
+                                            <button class="btn btn-sm btn-outline-danger" onclick="return confirm('{{ __('dashboard.confirm_delete_student') }}')">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </form>

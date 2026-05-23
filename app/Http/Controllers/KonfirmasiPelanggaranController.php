@@ -35,7 +35,7 @@ class KonfirmasiPelanggaranController extends Controller
                 'updated_at' => now()
             ]);
 
-        return redirect()->back()->with('success', 'Pelanggaran berhasil dikonfirmasi.');
+        return redirect()->back()->with('success', __('messages.violation_confirmed'));
     }
 
     public function reject($id)
@@ -47,7 +47,7 @@ class KonfirmasiPelanggaranController extends Controller
                 'updated_at' => now()
             ]);
 
-        return redirect()->back()->with('success', 'Pelanggaran telah ditolak.');
+        return redirect()->back()->with('success', __('messages.violation_rejected'));
     }
     // app/Http/Controllers/KonfirmasiPelanggaranController.php
 

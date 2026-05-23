@@ -57,7 +57,7 @@ class ProfileSekolahController extends Controller
 
     ProfileSekolah::create($data);
 
-    return redirect()->back()->with('success', 'Data berhasil ditambahkan!');
+    return redirect()->back()->with('success', __('messages.profile_added'));
 }
     public function update(Request $request, $id)
     {
@@ -90,7 +90,7 @@ class ProfileSekolahController extends Controller
 
         $profile->update($data);
 
-        return redirect()->back()->with('success', 'Data berhasil diperbarui!');
+        return redirect()->back()->with('success', __('messages.profile_updated'));
     }
 
     public function destroy($id)
@@ -101,7 +101,7 @@ class ProfileSekolahController extends Controller
         if (File::exists(public_path($profile->foto_sekolah))) File::delete(public_path($profile->foto_sekolah));
         
         $profile->delete();
-        return redirect()->back()->with('success', 'Data berhasil dihapus!');
+        return redirect()->back()->with('success', __('messages.profile_deleted'));
     }
 
     // Tambahkan method ini di dalam class ProfileSekolahController
@@ -118,9 +118,9 @@ public function deleteImage(Request $request, $id)
         $profile->$type = null; // Set kolom jadi null di DB
         $profile->save();
 
-        return response()->json(['success' => true, 'message' => ucfirst($type) . ' berhasil dihapus']);
+        return response()->json(['success' => true, 'message' => __('messages.image_deleted', ['type' => ucfirst($type)])]);
     }
 
-    return response()->json(['success' => false, 'message' => 'Tipe tidak valid'], 400);
+    return response()->json(['success' => false, 'message' => __('messages.invalid_type')], 400);
 }
 }

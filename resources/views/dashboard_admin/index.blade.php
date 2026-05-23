@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin</title>
+    <title>{{ __('dashboard.panel_summary') }}</title>
     @if(isset($sekolah->logo))
     <link rel="icon" type="image/png" href="{{ asset($sekolah->logo) }}">
     @else
@@ -94,14 +94,14 @@
                     <button type="button" id="sidebarCollapse" class="btn">
                         <i class="bi bi-list fs-4"></i>
                     </button>
-                    <h5 class="ms-3 mb-0 fw-bold">Ringkasan Panel</h5>
+                    <h5 class="ms-3 mb-0 fw-bold">{{ __('dashboard.panel_summary') }}</h5>
                 </div>
 
                 <div class="card welcome-card p-4 mb-4">
                     <div class="row align-items-center">
                         <div class="col-md-8">
-                            <h2 class="fw-bold mb-2">Hallo Admin, Selamat Datang</h2>
-                            <p class="mb-0 opacity-75">Sistem Manajemen Sekolah Real-time.</p>
+                            <h2 class="fw-bold mb-2">{{ __('dashboard.admin_welcome') }}</h2>
+                            <p class="mb-0 opacity-75">{{ __('dashboard.admin_subtitle') }}</p>
                         </div>
                         <div class="col-md-4 text-md-end mt-3 mt-md-0">
                             <div class="clock-box text-white">

@@ -46,7 +46,7 @@ class PelanggaranController extends Controller
             'updated_at' => now()
         ]);
 
-        return redirect()->back()->with('success', 'Aturan pelanggaran berhasil ditambahkan.');
+        return redirect()->back()->with('success', __('messages.rule_added'));
     }
 
     // Update pada method storePelanggaranMurid
@@ -67,12 +67,12 @@ public function storePelanggaranMurid(Request $request)
         'updated_at' => now()
     ]);
 
-    return redirect()->back()->with('success', 'Catatan pelanggaran murid berhasil disimpan dan menunggu konfirmasi.');
+    return redirect()->back()->with('success', __('messages.violation_recorded'));
 }
     public function destroy($id)
     {
         DB::table('pelanggaran_murid')->where('id', $id)->delete();
-        return redirect()->back()->with('success', 'Catatan pelanggaran berhasil dihapus.');
+        return redirect()->back()->with('success', __('messages.violation_deleted'));
     }
 
     // Tambahkan method ini di dalam PelanggaranController
@@ -89,7 +89,7 @@ public function updateAturan(Request $request, $id)
         'updated_at' => now()
     ]);
 
-    return redirect()->back()->with('success', 'Aturan berhasil diperbarui.');
+    return redirect()->back()->with('success', __('messages.rule_updated'));
 }
 
 public function destroyAturan($id)
@@ -98,7 +98,7 @@ public function destroyAturan($id)
     $isUsed = DB::table('pelanggaran_murid')->where('id_aturan_pelanggaran', $id)->exists();
     
     if($isUsed) {
-        return redirect()->back()->with('error', 'Aturan tidak bisa dihapus karena sudah tercatat pada data murid.');
+        return redirect()->back()->with('error', __('messages.rule_cannot_delete'));
     }
 
     DB::table('aturan_pelanggaran')->where('id', $id)->delete();
@@ -146,7 +146,7 @@ public function ajaxSearch(Request $request)
             </tr>';
         }
     } else {
-        $output = '<tr><td colspan="6" class="text-center py-4 text-muted">Data tidak ditemukan</td></tr>';
+        $output = '<tr><td colspan="6" class="text-center py-4 text-muted">' . e(__('messages.table_no_results')) . '</td></tr>';
     }
 
     return response($output);

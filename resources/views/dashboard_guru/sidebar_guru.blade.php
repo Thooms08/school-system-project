@@ -139,10 +139,10 @@
 <nav id="sidebar">
     <div class="sidebar-header">
         <div>
-            <h5 class="mb-0 fw-bold"><i class="bi bi-shield-check me-2"></i>GURU PANEL</h5>
-            <small class="text-success text-opacity-75">Sistem Sekolah</small>
+            <h5 class="mb-0 fw-bold"><i class="bi bi-shield-check me-2"></i>{{ __('menu.teacher_panel') }}</h5>
+            <small class="text-success text-opacity-75">{{ __('menu.school_system') }}</small>
         </div>
-        <button id="close-sidebar" title="Tutup Menu">
+        <button id="close-sidebar" title="{{ __('menu.close_menu') }}">
             <i class="bi bi-x-lg"></i>
         </button>
     </div>
@@ -150,20 +150,20 @@
     <ul class="list-unstyled components">
         <li class="{{ Request::is('dashboard_admin') ? 'active' : '' }}">
             <a href="{{ route('guru.home') }}">
-                <i class="bi bi-speedometer2"></i> Dashboard
+                <i class="bi bi-speedometer2"></i> {{ __('menu.dashboard') }}
             </a>
         </li>
 
         <li>
-        <a href="{{ route('guru.keaktifan') }}"><i class="bi bi-activity"></i> Keaktifan</a>
+        <a href="{{ route('guru.keaktifan') }}"><i class="bi bi-activity"></i> {{ __('menu.activeness_record') }}</a>
         </li>
 
         <li>
-        <a href="{{ route('guru.pelanggaran') }}"><i class="bi bi-x-octagon"></i> Pelanggaran</a>
+        <a href="{{ route('guru.pelanggaran') }}"><i class="bi bi-x-octagon"></i> {{ __('menu.violation_record') }}</a>
         </li>
 
         <li>
-        <a href="{{ route('guru.absensi') }}"><i class="bi bi-calendar-check"></i> Absensi</a>
+        <a href="{{ route('guru.absensi') }}"><i class="bi bi-calendar-check"></i> {{ __('menu.attendance') }}</a>
         </li>
         <!-- <li><a href="#"><i class="bi bi-door-open"></i> Kelola Kelas</a></li> -->
 
@@ -208,7 +208,7 @@
             @csrf
             <button type="submit" class="btn-logout">
                 <i class="bi bi-box-arrow-right me-3"></i>
-                <span>Log Out</span>
+                <span>{{ __('menu.logout') }}</span>
             </button>
         </form>
     </div>

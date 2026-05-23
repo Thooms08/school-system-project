@@ -50,9 +50,9 @@ class AkunGuruController extends Controller
                 ]);
             });
 
-            return redirect()->back()->with('success', 'Akun guru berhasil dibuat!');
+            return redirect()->back()->with('success', __('messages.teacher_account_created'));
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'Gagal menyimpan data: ' . $e->getMessage()]);
+            return redirect()->back()->withErrors(['error' => __('messages.save_failed', ['message' => $e->getMessage()])]);
         }
     }
 
@@ -71,7 +71,7 @@ class AkunGuruController extends Controller
         }
         $user->save();
 
-        return redirect()->back()->with('success', 'Akun guru berhasil diperbarui!');
+        return redirect()->back()->with('success', __('messages.teacher_account_updated'));
     }
 
     public function destroy($id_user)
@@ -83,9 +83,9 @@ class AkunGuruController extends Controller
                 User::destroy($id_user);
             });
 
-            return redirect()->back()->with('success', 'Akun guru berhasil dihapus!');
+            return redirect()->back()->with('success', __('messages.teacher_account_deleted'));
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'Gagal menghapus data.']);
+            return redirect()->back()->withErrors(['error' => __('messages.delete_failed')]);
         }
     }
     public function search(Request $request)
@@ -123,7 +123,7 @@ class AkunGuruController extends Controller
             </tr>';
         }
     } else {
-        $output = '<tr><td colspan="4" class="text-center text-muted py-4">Data tidak ditemukan</td></tr>';
+        $output = '<tr><td colspan="4" class="text-center text-muted py-4">' . e(__('messages.table_no_results')) . '</td></tr>';
     }
 
     return response($output);

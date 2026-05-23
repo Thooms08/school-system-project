@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Absensi Guru</title>
+    <title>{{ __('dashboard.attendance_management') }}</title>
     @if(isset($sekolah->logo))
     <link rel="icon" type="image/png" href="{{ asset($sekolah->logo) }}">
     @else
@@ -39,10 +39,10 @@
             <div class="d-flex align-items-center justify-content-between mb-4">
                 <div class="d-flex align-items-center">
                     <button type="button" id="sidebarCollapse"><i class="bi bi-list fs-4"></i></button>
-                    <h5 class="ms-3 mb-0 fw-bold">Manajemen Absensi</h5>
+                    <h5 class="ms-3 mb-0 fw-bold">{{ __('dashboard.attendance_management') }}</h5>
                 </div>
                 <button class="btn btn-outline-success fw-bold px-4" onclick="openArsipModal()">
-                    <i class="bi bi-archive me-2"></i> Arsip Absensi
+                    <i class="bi bi-archive me-2"></i> {{ __('dashboard.attendance_archive') }}
                 </button>
             </div>
 
@@ -57,9 +57,9 @@
                     @csrf
                     <div class="row mb-4 align-items-end">
                         <div class="col-md-4">
-                            <label class="form-label fw-bold">Pilih Kelas</label>
+                            <label class="form-label fw-bold">{{ __('dashboard.select_class') }}</label>
                             <select name="id_kelas" id="kelasSelect" class="form-select border-success shadow-none py-2">
-                                <option value="">-- Pilih Kelas --</option>
+                                <option value="">{{ __('dashboard.select_class_option2') }}</option>
                                 @foreach($kelas as $k)
                                     <option value="{{ $k->id }}">{{ $k->nama_kelas }}</option>
                                 @endforeach
@@ -76,7 +76,7 @@
                         <table class="table table-hover align-middle">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Nama Murid</th>
+                                    <th>{{ __('dashboard.student_name_th') }}</th>
                                     <th width="200">Kehadiran</th>
                                     <th>Keterangan</th>
                                 </tr>
@@ -85,7 +85,7 @@
                         </table>
                         <div class="text-end mt-4">
                             <button type="submit" class="btn btn-success px-5 py-2 fw-bold" {{ $isMinggu ? 'disabled' : '' }}>
-                                <i class="bi bi-save me-2"></i> Simpan Absensi
+                                <i class="bi bi-save me-2"></i> {{ __('dashboard.save_attendance') }}
                             </button>
                         </div>
                     </div>
@@ -99,14 +99,14 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content border-0">
             <div class="modal-header bg-success text-white">
-                <h5 class="modal-title fw-bold">Arsip Absensi Murid</h5>
+                <h5 class="modal-title fw-bold">{{ __('dashboard.archive_title') }}</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
                 <div class="row g-2 mb-3">
                     <div class="col-md-4">
                         <select id="arsipKelas" class="form-select border-success shadow-none">
-                            <option value="">Pilih Kelas</option>
+                            <option value="">{{ __('dashboard.select_class_archive') }}</option>
                             @foreach($kelas as $k) <option value="{{ $k->id }}">{{ $k->nama_kelas }}</option> @endforeach
                         </select>
                     </div>
@@ -124,21 +124,21 @@
 
                 <div class="mb-4 search-container" style="position: relative;">
                     <i class="bi bi-search" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #198754;"></i>
-                    <input type="text" id="searchArsip" class="form-control shadow-none border-success" style="padding-left: 45px; border-radius: 12px;" placeholder="Cari nama murid...">
+                    <input type="text" id="searchArsip" class="form-control shadow-none border-success" style="padding-left: 45px; border-radius: 12px;" placeholder="{{ __('dashboard.search_student_archive') }}">
                 </div>
 
                 <div class="table-responsive">
                     <table class="table table-hover align-middle">
                         <thead class="table-light">
                             <tr>
-                                <th>Nama Murid</th>
+                                <th>{{ __('dashboard.student_name_th') }}</th>
                                 <th class="text-center">Hadir</th>
                                 <th class="text-center">Alfa/Izin</th>
                                 <th class="text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="arsipList">
-                            <tr><td colspan="4" class="text-center text-muted py-4">Silakan pilih kelas terlebih dahulu</td></tr>
+                            <tr><td colspan="4" class="text-center text-muted py-4">{{ __('dashboard.select_class_first_msg') }}</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -151,7 +151,7 @@
     <div class="modal-dialog">
         <div class="modal-content border-0">
             <div class="modal-header bg-dark text-white">
-                <h6 class="modal-title fw-bold" id="rekapName">Rekap Absensi</h6>
+                <h6 class="modal-title fw-bold" id="rekapName">{{ __('dashboard.attendance_recap') }}</h6>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
@@ -168,6 +168,16 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    const i18nAbsensi = {
+        dataNotFound: @json(__('dashboard.data_not_found_msg')),
+        failedLoad: @json(__('dashboard.failed_load_msg')),
+        present: @json(__('general.present')),
+        absent: @json(__('general.absent')),
+        days: @json(__('dashboard.days_suffix')),
+        detail: @json(__('dashboard.detail_btn_short')),
+        notesPh: @json(__('dashboard.notes_placeholder_short')),
+    };
+
     // Inisialisasi Modals
     const arsipModal = new bootstrap.Modal(document.getElementById('modalArsip'));
     const rekapModal = new bootstrap.Modal(document.getElementById('modalRekap'));
@@ -190,11 +200,11 @@
                         <td><span class="fw-bold">${m.nama_lengkap}</span><br><small class="text-muted">${m.nisn}</small></td>
                         <td>
                             <select name="absensi[${m.id}][status]" class="form-select rounded-pill shadow-none" {{ $isMinggu ? 'disabled' : '' }}>
-                                <option value="hadir">Hadir</option>
-                                <option value="tidak_hadir">Tidak Hadir</option>
+                                <option value="hadir">${i18nAbsensi.present}</option>
+                                <option value="tidak_hadir">${i18nAbsensi.absent}</option>
                             </select>
                         </td>
-                        <td><input type="text" name="absensi[${m.id}][keterangan]" class="form-control rounded-pill" placeholder="Catatan..." {{ $isMinggu ? 'disabled' : '' }}></td>
+                        <td><input type="text" name="absensi[${m.id}][keterangan]" class="form-control rounded-pill" placeholder="${i18nAbsensi.notesPh}" {{ $isMinggu ? 'disabled' : '' }}></td>
                     </tr>`;
                 });
                 container.style.display = 'block';
@@ -210,7 +220,7 @@
 
         if (!idKelas) return;
 
-        listContainer.innerHTML = '<tr><td colspan="4" class="text-center py-3">Memuat data...</td></tr>';
+        listContainer.innerHTML = `<tr><td colspan="4" class="text-center py-3">{{ __('dashboard.loading_data') }}</td></tr>`;
 
         // Kirim semua parameter ke controller
         const params = new URLSearchParams({
@@ -225,7 +235,7 @@
             .then(data => {
                 listContainer.innerHTML = '';
                 if (data.length === 0) {
-                    listContainer.innerHTML = '<tr><td colspan="4" class="text-center text-muted py-4">Data tidak ditemukan</td></tr>';
+                    listContainer.innerHTML = `<tr><td colspan="4" class="text-center text-muted py-4">${i18nAbsensi.dataNotFound}</td></tr>`;
                     return;
                 }
                 
@@ -233,18 +243,18 @@
                     listContainer.innerHTML += `
                         <tr>
                             <td><span class="fw-bold text-dark">${m.nama_lengkap}</span></td>
-                            <td class="text-center"><span class="badge bg-success-subtle text-success">${m.total_hadir} Hari</span></td>
-                            <td class="text-center"><span class="badge bg-danger-subtle text-danger">${m.total_tidak_hadir} Hari</span></td>
+                            <td class="text-center"><span class="badge bg-success-subtle text-success">${m.total_hadir} ${i18nAbsensi.days}</span></td>
+                            <td class="text-center"><span class="badge bg-danger-subtle text-danger">${m.total_tidak_hadir} ${i18nAbsensi.days}</span></td>
                             <td class="text-center">
                                 <button class="btn btn-sm btn-success rounded-pill px-3" onclick="viewRekap(${m.id}, '${m.nama_lengkap}')">
-                                    <i class="bi bi-calendar3"></i> Detail
+                                    <i class="bi bi-calendar3"></i> ${i18nAbsensi.detail}
                                 </button>
                             </td>
                         </tr>`;
                 });
             })
             .catch(err => {
-                listContainer.innerHTML = '<tr><td colspan="4" class="text-center text-danger py-4">Gagal memuat data</td></tr>';
+                listContainer.innerHTML = `<tr><td colspan="4" class="text-center text-danger py-4">${i18nAbsensi.failedLoad}</td></tr>`;
             });
     }
 

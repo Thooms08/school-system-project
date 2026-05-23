@@ -21,7 +21,7 @@ class AbsensiController extends Controller
         $request->validate(['id_kelas' => 'required', 'absensi' => 'required|array']);
 
         if (Carbon::now()->isSunday()) {
-            return redirect()->back()->with('error', 'Tidak dapat melakukan absensi di hari Minggu.');
+            return redirect()->back()->with('error', __('messages.sunday_no_attendance'));
         }
 
         $guru = DB::table('guru')
@@ -31,7 +31,7 @@ class AbsensiController extends Controller
             ->first();
         
         if (!$guru) {
-            return redirect()->back()->with('error', 'Data guru tidak ditemukan. Pastikan relasi user dan guru sudah diatur.');
+            return redirect()->back()->with('error', __('messages.teacher_not_found'));
         }
 
         try {
@@ -49,9 +49,9 @@ class AbsensiController extends Controller
                     );
                 }
             });
-            return redirect()->back()->with('success', 'Absensi berhasil disimpan.');
+            return redirect()->back()->with('success', __('messages.attendance_saved'));
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal menyimpan: ' . $e->getMessage());
+            return redirect()->back()->with('error', __('messages.attendance_save_failed', ['message' => $e->getMessage()]));
         }
     }
 
@@ -94,7 +94,7 @@ class AbsensiController extends Controller
         $id_murid = $request->id_murid;
 
         if (!$id_murid) {
-            return response()->json(['error' => 'ID Murid tidak ditemukan'], 400);
+            return response()->json(['error' => __('messages.student_id_not_found')], 400);
         }
 
         try {

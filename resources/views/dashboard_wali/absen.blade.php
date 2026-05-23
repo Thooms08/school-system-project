@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wali Murid | Absensi Murid</title>
+    <title>{{ __('dashboard.student_attendance_wali') }}</title>
      @if(isset($sekolah->logo))
     <link rel="icon" type="image/png" href="{{ asset($sekolah->logo) }}">
     @else
@@ -39,9 +39,9 @@
 <div class="container py-4">
     <div class="d-flex align-items-center justify-content-between mb-4">
         <a href="{{ route('wali.home') }}" class="btn btn-outline-success rounded-pill px-4">
-            <i class="bi bi-arrow-left me-2"></i> Kembali
+            <i class="bi bi-arrow-left me-2"></i> {{ __('dashboard.back_btn_wali') }}
         </a>
-        <h4 class="fw-bold mb-0 text-success">Absensi Ananda</h4>
+        <h4 class="fw-bold mb-0 text-success">{{ __('dashboard.student_attendance_wali') }}</h4>
     </div>
 
     <div class="card p-3 mb-4">
@@ -73,8 +73,8 @@
             <table class="table align-middle table-responsive-stack">
                 <thead class="bg-light">
                     <tr>
-                        <th>Nama Murid</th>
-                        <th>Kelas</th>
+                        <th>{{ __('dashboard.student_name_col') }}</th>
+                        <th>{{ __('dashboard.class_col2') }}</th>
                         <th class="text-center">Kalender</th>
                         <th class="text-center">Total Hadir</th>
                         <th class="text-center">Tidak Hadir</th>
@@ -83,11 +83,11 @@
                 <tbody>
                     <tr>
                         <td><span class="mobile-label">Nama:</span> <strong>{{ $murid->nama_lengkap }}</strong></td>
-                        <td><span class="mobile-label">Kelas:</span> {{ $murid->nama_kelas ?? 'Belum ada kelas' }}</td>
+                        <td><span class="mobile-label">{{ __('dashboard.class_label2') }}</span> {{ $murid->nama_kelas ?? __('dashboard.no_class') }}</td>
                         <td class="text-center">
                             <span class="mobile-label">Opsi:</span>
                             <button class="btn btn-sm btn-outline-success" onclick="openCalendar({{ $murid->id }})">
-                                <i class="bi bi-calendar3"></i> Lihat Detail
+                                <i class="bi bi-calendar3"></i> {{ __('dashboard.view_detail_btn') }}
                             </button>
                         </td>
                         <td class="text-center">
@@ -166,7 +166,7 @@
                 }
             })
             .catch(err => {
-                container.innerHTML = '<span class="text-danger">Gagal memuat data.</span>';
+                container.innerHTML = `<span class="text-danger">{{ __('dashboard.failed_load_calendar') }}</span>`;
                 console.error(err);
             });
     }

@@ -59,9 +59,9 @@ class AkunWaliController extends Controller
                 ]);
             });
 
-            return redirect()->back()->with('success', 'Akun wali murid berhasil dibuat!');
+            return redirect()->back()->with('success', __('messages.guardian_account_created'));
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'Gagal menyimpan data: ' . $e->getMessage()]);
+            return redirect()->back()->withErrors(['error' => __('messages.save_failed', ['message' => $e->getMessage()])]);
         }
     }
 
@@ -80,7 +80,7 @@ class AkunWaliController extends Controller
         }
         $user->save();
 
-        return redirect()->back()->with('success', 'Akun wali murid berhasil diperbarui!');
+        return redirect()->back()->with('success', __('messages.guardian_account_updated'));
     }
 
     public function destroy($id_user)
@@ -90,9 +90,9 @@ class AkunWaliController extends Controller
                 DB::table('relasi_wali')->where('id_user', $id_user)->delete();
                 User::destroy($id_user);
             });
-            return redirect()->back()->with('success', 'Akun wali murid berhasil dihapus!');
+            return redirect()->back()->with('success', __('messages.guardian_account_deleted'));
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'Gagal menghapus akun.']);
+            return redirect()->back()->withErrors(['error' => __('messages.delete_account_failed')]);
         }
     }
 
@@ -162,7 +162,7 @@ public function search(Request $request)
             </tr>';
         }
     } else {
-        $output = '<tr><td colspan="4" class="text-center text-muted py-4">Data tidak ditemukan</td></tr>';
+        $output = '<tr><td colspan="4" class="text-center text-muted py-4">' . e(__('messages.table_no_results')) . '</td></tr>';
     }
 
     return response($output);

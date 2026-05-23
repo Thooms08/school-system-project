@@ -41,7 +41,7 @@ class WaliMuridController extends Controller
                 </tr>';
             }
         } else {
-            $output = '<tr><td colspan="4" class="text-center py-4 text-muted">Data tidak ditemukan</td></tr>';
+            $output = '<tr><td colspan="4" class="text-center py-4 text-muted">' . e(__('messages.table_no_results')) . '</td></tr>';
         }
 
         return response($output);

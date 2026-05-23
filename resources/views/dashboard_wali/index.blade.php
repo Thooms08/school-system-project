@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Wali Murid</title>
+    <title>{{ __('dashboard.guardian_panel') }}</title>
      @if(isset($sekolah->logo))
     <link rel="icon" type="image/png" href="{{ asset($sekolah->logo) }}">
     @else
@@ -92,11 +92,11 @@
 
     <div class="welcome-section shadow-sm">
         <div class="container text-center">
-            <h2 class="fw-bold">Selamat Datang, Bapak/Ibu Wali Murid</h2>
+            <h2 class="fw-bold">{{ __('dashboard.guardian_welcome') }}</h2>
             @if($dataWali)
                 <p class="opacity-75">Memantau perkembangan <strong>{{ $dataWali->nama_lengkap }}</strong> ({{ $dataWali->nisn }})</p>
             @else
-                <p class="opacity-75">Data murid tidak ditemukan. Hubungi admin sekolah.</p>
+                <p class="opacity-75">{{ __('messages.student_not_found_guardian') }}</p>
             @endif
         </div>
     </div>
@@ -109,10 +109,10 @@
                         <div class="icon-box">
                             <i class="bi bi-calendar-check-fill"></i>
                         </div>
-                        <h4 class="card-title">Absen Murid</h4>
+                        <h4 class="card-title">{{ __('dashboard.student_attendance_title') }}</h4>
                         <p class="text-muted small">Pantau kehadiran harian, sakit, izin, atau tanpa keterangan ananda.</p>
                         <div class="text-success fw-bold">
-                            Lihat Detail <i class="bi bi-arrow-right ms-1"></i>
+                            {{ __('dashboard.view_detail') }} <i class="bi bi-arrow-right ms-1"></i>
                         </div>
                     </div>
                 </a>
@@ -124,10 +124,10 @@
                         <div class="icon-box" style="background-color: #fff3f3; color: #dc3545;">
                             <i class="bi bi-exclamation-triangle-fill"></i>
                         </div>
-                        <h4 class="card-title">Pelanggaran Murid</h4>
-                        <p class="text-muted small">Informasi poin pelanggaran, teguran, atau masalah kedisiplinan murid.</p>
+                        <h4 class="card-title">{{ __('dashboard.student_violation_title') }}</h4>
+                        <p class="text-muted small">{{ __('dashboard.student_violation_desc') }}</p>
                         <div class="text-danger fw-bold">
-                            Lihat Detail <i class="bi bi-arrow-right ms-1"></i>
+                            {{ __('dashboard.view_detail') }} <i class="bi bi-arrow-right ms-1"></i>
                         </div>
                     </div>
                 </a>
@@ -139,9 +139,9 @@
                         <div class="icon-box" style="background-color: #e3f2fd; color: #0d6efd;">
                             <i class="bi bi-graph-up-arrow"></i>
                         </div>
-                        <h4 class="card-title">Keaktifan Murid</h4>
+                        <h4 class="card-title">{{ __('dashboard.student_activeness_title') }}</h4>
                         <p class="text-muted small">Rekap partisipasi dalam kelas, nilai keaktifan harian, dan prestasi.</p>
-                        <div class="text-primary fw-bold">Lihat Detail <i class="bi bi-arrow-right ms-1"></i></div>
+                        <div class="text-primary fw-bold">{{ __('dashboard.view_detail') }} <i class="bi bi-arrow-right ms-1"></i></div>
                     </div>
                 </a>
             </div>

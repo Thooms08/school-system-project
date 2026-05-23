@@ -44,7 +44,7 @@ class KeaktifanController extends Controller
             ->first();
 
         if (!$guru) {
-            return redirect()->back()->with('error', 'Data guru Anda tidak ditemukan di sistem.');
+            return redirect()->back()->with('error', __('messages.teacher_data_not_found'));
         }
 
         DB::transaction(function () use ($request, $guru) {
@@ -83,7 +83,7 @@ class KeaktifanController extends Controller
             }
         });
 
-        return redirect()->back()->with('success', 'Data keaktifan berhasil diproses.');
+        return redirect()->back()->with('success', __('messages.activeness_processed'));
     }
 
     public function edit($id)
@@ -136,6 +136,6 @@ class KeaktifanController extends Controller
             }
         });
 
-        return redirect()->back()->with('success', 'Status keaktifan berhasil diperbarui.');
+        return redirect()->back()->with('success', __('messages.activeness_updated'));
     }
 }

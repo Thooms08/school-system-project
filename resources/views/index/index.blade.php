@@ -30,7 +30,7 @@
                 <img src="{{ asset($item->foto_kegiatan) }}" class="d-block w-100" alt="Slide">
                 <div class="carousel-caption">
                     <div class="container">
-                        <span class="badge bg-success mb-3 px-3 py-2 rounded-pill shadow-sm">Kegiatan</span>
+                        <span class="badge bg-success mb-3 px-3 py-2 rounded-pill shadow-sm">{{ __('dashboard.activities') }}</span>
                         <h1>{{ $item->label_foto }}</h1>
                         <p class="fs-5 opacity-75 d-none d-md-block">{{ Str::limit($item->deskripsi_foto, 100) }}</p>
                     </div>
@@ -45,10 +45,10 @@
         <div class="container text-center">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    <h3 class="fw-bold mb-3">Siap Bergabung Bersama Kami?</h3>
-                    <p class="text-muted mb-4 fs-5">Pendaftaran Peserta Didik Baru (PPDB) telah dibuka secara online</p>
+                    <h3 class="fw-bold mb-3">{{ __('dashboard.ready_to_join') }}</h3>
+                    <p class="text-muted mb-4 fs-5">{{ __('dashboard.ppdb_subtitle_home') }}</p>
                     <a href="{{ route('ppdb.index') }}" class="btn btn-ppdb">
-                        Daftar PPDB Online Sekarang <i class="bi bi-arrow-right-circle"></i>
+                        {{ __('dashboard.ppdb_online_now') }} <i class="bi bi-arrow-right-circle"></i>
                     </a>
                 </div>
             </div>
@@ -59,12 +59,12 @@
         <div class="container py-5">
             <div class="row align-items-center g-5">
                 <div class="col-lg-6">
-                    <span class="text-success fw-bold text-uppercase mb-2 d-block">Mengenal Sekolah</span>
-                    <h2 class="section-title">Lingkungan Belajar yang Nyaman dan Inspiratif</h2>
+                    <span class="text-success fw-bold text-uppercase mb-2 d-block">{{ __('dashboard.about_school') }}</span>
+                    <h2 class="section-title">{{ __('dashboard.comfortable_learning') }}</h2>
                     <p class="text-muted fs-5 lh-lg">{{ $sekolah->deskripsi ?? '' }}</p>
                     <div class="mt-4">
                         <span class="badge bg-success-subtle text-success border border-success p-2 px-3 rounded-pill fw-bold">
-                            <i class="bi bi-patch-check-fill me-1"></i> Terakreditasi: {{ $sekolah->akreditasi ?? '-' }}
+                            <i class="bi bi-patch-check-fill me-1"></i> {{ __('dashboard.accredited', ['value' => $sekolah->akreditasi ?? '-']) }}
                         </span>
                     </div>
                 </div>
@@ -72,8 +72,8 @@
                     <div class="position-relative">
                         <img src="{{ asset($sekolah->foto_sekolah ?? '') }}" class="img-fluid rounded-5 shadow-lg" alt="Gedung Sekolah" style="width: 100%; height: 400px; object-fit: cover;">
                         <div class="bg-success position-absolute bottom-0 start-0 p-4 m-4 rounded-4 text-white d-none d-md-block shadow">
-                            <h4 class="fw-bold mb-0">Unggul & Cerdas</h4>
-                            <small>Membangun Karakter Bangsa</small>
+                            <h4 class="fw-bold mb-0">{{ __('general.excellent_smart') }}</h4>
+                            <small>{{ __('general.building_character') }}</small>
                         </div>
                     </div>
                 </div>
@@ -84,8 +84,8 @@
     <section id="prestasi" class="py-5 bg-light rounded-5 mx-2 mx-md-4">
         <div class="container py-5">
             <div class="text-center mb-5">
-                <h2 class="section-title">Prestasi Murid Kami</h2>
-                <p class="text-muted">Bangga atas pencapaian akademik dan non-akademik siswa kami.</p>
+                <h2 class="section-title">{{ __('dashboard.student_achievements') }}</h2>
+                <p class="text-muted">{{ __('dashboard.achievements_subtitle') }}</p>
             </div>
             <div class="row g-4">
                 @foreach($prestasi->take(3) as $pres)
@@ -107,7 +107,7 @@
 
     <section id="program" class="py-5">
         <div class="container py-5">
-            <h2 class="section-title text-center mb-5">Program Unggulan</h2>
+            <h2 class="section-title text-center mb-5">{{ __('dashboard.featured_programs') }}</h2>
             <div class="row g-4">
                 @foreach($programs as $prog)
                 <div class="col-md-4">
@@ -125,7 +125,7 @@
     <section id="artikel" class="py-5 bg-light rounded-5 mx-2 mx-md-4">
         <div class="container py-5">
             <div class="d-flex justify-content-between align-items-center mb-5">
-                <h2 class="section-title mb-0">Artikel Sekolah</h2>
+                <h2 class="section-title mb-0">{{ __('dashboard.school_articles') }}</h2>
             </div>
             <div class="row g-4">
                 @foreach($artikels->take(3) as $art)
@@ -138,7 +138,7 @@
                             <small class="text-success fw-bold d-block mb-2">{{ $art->created_at->format('d M Y') }}</small>
                             <h5 class="fw-bold mb-3">{{ $art->judul }}</h5>
                             <p class="text-muted small mb-4">{{ Str::limit($art->deskripsi, 110) }}</p>
-                            <a href="{{ url('/artikel/'.$art->id) }}" class="text-success fw-bold text-decoration-none">Selengkapnya <i class="bi bi-arrow-right"></i></a>
+                            <a href="{{ url('/artikel/'.$art->id) }}" class="text-success fw-bold text-decoration-none">{{ __('general.read_more') }} <i class="bi bi-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>

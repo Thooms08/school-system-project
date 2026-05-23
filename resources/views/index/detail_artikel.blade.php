@@ -9,8 +9,8 @@
             <div class="col-lg-8">
                 <nav aria-label="breadcrumb" class="mb-4">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('home') }}" class="text-success">Beranda</a></li>
-                        <li class="breadcrumb-item active">Artikel</li>
+                        <li class="breadcrumb-item"><a href="{{ route('home') }}" class="text-success">{{ __('general.breadcrumb_home') }}</a></li>
+                        <li class="breadcrumb-item active">{{ __('dashboard.article_detail_title') }}</li>
                     </ol>
                 </nav>
 
@@ -19,7 +19,7 @@
                 @if($artikel->fotos->count() > 0)
                     <div class="mb-4">
                         <img src="{{ asset($artikel->fotos->first()->foto_artikel) }}" class="img-fluid rounded-4 shadow w-100" alt="Foto" style="width: 80%; height:80% ; object-fit: cover">
-                        <p class="mt-2 text-center small text-muted">Sumber gambar: {{ $artikel->fotos->first()->sumber_foto }}</p>
+                        <p class="mt-2 text-center small text-muted">{{ __('general.source') }}: {{ $artikel->fotos->first()->sumber_foto }}</p>
                     </div>
                 @endif
 
@@ -29,7 +29,7 @@
 
                 <div class="mt-5 border-top pt-4">
                     <a href="{{ route('home') }}" class="btn btn-outline-success rounded-pill px-4">
-                        <i class="bi bi-arrow-left me-2"></i>Kembali ke Beranda
+                        <i class="bi bi-arrow-left me-2"></i>{{ __('dashboard.back_to_home_link') }}
                     </a>
                 </div>
             </div>

@@ -26,7 +26,7 @@ class WaliAbsensiController extends Controller
         ->first();
 
     if (!$murid) {
-        return redirect()->route('wali.home')->with('error', 'Data murid tidak ditemukan.');
+        return redirect()->route('wali.home')->with('error', __('messages.student_not_found'));
     }
 
     // Hitung Rekap (Query tetap sama)

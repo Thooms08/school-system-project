@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,14 +53,14 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">Beranda</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#profil">Tentang</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#prestasi">Prestasi</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#program">Program</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#artikel">Artikel</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">{{ __('dashboard.home_navbar') }}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#profil">{{ __('dashboard.home_about') }}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#prestasi">{{ __('dashboard.home_achievements') }}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#program">{{ __('dashboard.home_programs') }}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#artikel">{{ __('dashboard.home_articles') }}</a></li>
                     <li class="nav-item ms-lg-3">
                         <a class="btn btn-login shadow-sm" href="{{ route('login') }}">
-                            <i class="bi bi-person-circle me-1"></i> Log In
+                            <i class="bi bi-person-circle me-1"></i> {{ __('general.login') }}
                         </a>
                     </li>
                 </ul>
@@ -81,7 +81,7 @@
                     <!--<p class="small lh-lg">{{ $sekolah->deskripsi ?? '' }}</p>-->
                 </div>
                 <div class="col-lg-4">
-                    <h5>Informasi Kontak</h5>
+                    <h5>{{ __('general.contact_info') }}</h5>
                     <ul class="list-unstyled mt-4">
                         <li class="mb-3 d-flex align-items-start"><i class="bi bi-geo-alt-fill text-success me-3 fs-5"></i> {{ $sekolah->alamat ?? '' }}</li>
                         <li class="mb-3 d-flex align-items-start"><i class="bi bi-telephone-fill text-success me-3 fs-5"></i> {{ $sekolah->no_hp ?? '' }}</li>
@@ -89,7 +89,7 @@
                     </ul>
                 </div>
                 <div class="col-lg-4">
-                    <h5>Lokasi Kami</h5>
+                    <h5>{{ __('general.our_location') }}</h5>
                     <div class="rounded-4 overflow-hidden shadow-lg mt-4 bg-light d-flex align-items-center justify-content-center" style="height: 220px;">
                         @if(!empty($sekolah->tautan_google_maps))
                             <div class="maps-container w-100 h-100">
@@ -98,7 +98,7 @@
                         @else
                             <div class="text-center p-4">
                                 <i class="bi bi-map text-secondary fs-1 mb-2"></i>
-                                <p class="small text-secondary mb-0">Lokasi belum tersedia</p>
+                                <p class="small text-secondary mb-0">{{ __('general.location_unavailable') }}</p>
                             </div>
                         @endif
                     </div>

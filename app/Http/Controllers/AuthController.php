@@ -38,7 +38,7 @@ class AuthController extends Controller
 
         // Jika login gagal
         return back()->withErrors([
-            'username' => 'Username atau password salah.',
+            'username' => __('auth.failed'),
         ])->onlyInput('username');
     }
 

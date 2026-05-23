@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wali Murid | Pelanggaran Murid</title>
+    <title>{{ __('dashboard.student_violation_title') }}</title>
      @if(isset($sekolah->logo))
     <link rel="icon" type="image/png" href="{{ asset($sekolah->logo) }}">
     @else
@@ -32,19 +32,19 @@
 <div class="container py-4">
     <div class="d-flex align-items-center justify-content-between mb-4">
         <a href="{{ route('wali.home') }}" class="btn btn-outline-secondary rounded-pill px-4">
-            <i class="bi bi-arrow-left me-2"></i> Kembali
+            <i class="bi bi-arrow-left me-2"></i> {{ __('dashboard.back_btn_wali') }}
         </a>
-        <h4 class="fw-bold mb-0 text-dark">E-Sikap & Pelanggaran</h4>
+        <h4 class="fw-bold mb-0 text-dark">{{ __('dashboard.esikap_title') }}</h4>
     </div>
 
     <div class="row g-4">
         <div class="col-lg-4">
             <div class="card p-4 mb-4 text-center">
-                <h6 class="fw-bold mb-3 text-start">Profil & Statistik</h6>
+                <h6 class="fw-bold mb-3 text-start">{{ __('dashboard.profile_stats') }}</h6>
                 <div class="mb-4 text-start">
-                    <label class="small text-muted">Nama Murid:</label>
+                    <label class="small text-muted">{{ __('dashboard.student_name_label2') }}</label>
                     <div class="fw-bold" id="namaMuridDisplay">-</div>
-                    <label class="small text-muted mt-2">Kelas:</label>
+                    <label class="small text-muted mt-2">{{ __('dashboard.class_label2') }}</label>
                     <div class="fw-bold" id="kelasMuridDisplay">-</div>
                 </div>
 
@@ -52,9 +52,9 @@
 
                 <div class="mb-3">
                     <select id="filterRange" class="form-select mb-2" onchange="loadData()">
-                        <option value="1_minggu">1 Minggu Terakhir</option>
-                        <option value="1_bulan" selected>1 Bulan Terakhir</option>
-                        <option value="1_tahun">1 Tahun Terakhir</option>
+                        <option value="1_minggu">{{ __('dashboard.last_1_week') }}</option>
+                        <option value="1_bulan" selected>{{ __('dashboard.last_1_month') }}</option>
+                        <option value="1_tahun">{{ __('dashboard.last_1_year') }}</option>
                     </select>
                     <input type="date" id="filterTanggal" class="form-select" onchange="loadData()">
                 </div>
@@ -63,7 +63,7 @@
                     <canvas id="pelanggaranChart"></canvas>
                     <div class="mt-3">
                         <h3 class="fw-bold mb-0" id="totalSkorDisplay">0</h3>
-                        <small class="text-muted">Total Poin Pelanggaran</small>
+                        <small class="text-muted">{{ __('dashboard.total_score') }}</small>
                     </div>
                 </div>
             </div>
@@ -72,18 +72,18 @@
         <div class="col-lg-8">
             <div class="card p-4">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h6 class="fw-bold mb-0">Riwayat Pelanggaran</h6>
-                    <span class="badge bg-secondary rounded-pill">Data Terkini</span>
+                    <h6 class="fw-bold mb-0">{{ __('dashboard.violation_history') }}</h6>
+                    <span class="badge bg-secondary rounded-pill">{{ __('general.latest_data') }}</span>
                 </div>
 
                 <div class="table-responsive desktop-table">
                     <table class="table align-middle">
                         <thead class="table-light">
                             <tr>
-                                <th>Tanggal</th>
-                                <th>Pelanggaran</th>
-                                <th>Skor</th>
-                                <th class="text-center">Aksi</th>
+                                <th>{{ __('dashboard.date_col3') }}</th>
+                                <th>{{ __('dashboard.violation_col3') }}</th>
+                                <th>{{ __('dashboard.score_col3') }}</th>
+                                <th class="text-center">{{ __('general.action') }}</th>
                             </tr>
                         </thead>
                         <tbody id="tableBody"></tbody>
@@ -100,7 +100,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow">
             <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title">Detail Pelanggaran</h5>
+                <h5 class="modal-title">{{ __('dashboard.violation_detail') }}</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4" id="detailContent">
@@ -112,8 +112,19 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // Variabel global untuk menyimpan instance chart agar bisa di-reset
-let myChart;
+    const i18nWaliPel = {
+        notInClass: @json(__('dashboard.not_in_class')),
+        noViolations: @json(__('dashboard.no_violations')),
+        noViolationsMobile: @json(__('dashboard.no_violations_mobile')),
+        viewDetail: @json(__('dashboard.view_detail_mobile')),
+        networkError: @json(__('dashboard.network_error')),
+        failedLoad: @json(__('dashboard.failed_load_activeness')),
+        pointsLabel: @json(__('dashboard.points_label')),
+        notesLabel: @json(__('dashboard.notes_label2')),
+        violationTypeLabel: @json(__('dashboard.violation_type_label')),
+        pointsWord: @json(__('general.points')),
+    };
+    let myChart;
 
 /**
  * Inisialisasi atau Update Chart.js
@@ -151,13 +162,13 @@ function loadData() {
     // URL mengarah ke route WaliPelanggaranController@getPelanggaranData
     fetch(`{{ route('wali.pelanggaran.data') }}?range=${range}&tanggal=${tgl}`)
         .then(res => {
-            if (!res.ok) throw new Error('Jaringan bermasalah');
+            if (!res.ok) throw new Error(i18nWaliPel.networkError);
             return res.json();
         })
         .then(res => {
             // --- 1. UPDATE PROFIL MURID (Selalu Tampil) ---
             document.getElementById('namaMuridDisplay').innerText = res.murid.nama_lengkap;
-            document.getElementById('kelasMuridDisplay').innerText = res.murid.nama_kelas || 'Belum Masuk Kelas';
+            document.getElementById('kelasMuridDisplay').innerText = res.murid.nama_kelas || i18nWaliPel.notInClass;
             
             // Update Skor Poin
             const totalSkor = res.total_skor;
@@ -180,13 +191,13 @@ function loadData() {
                     <tr>
                         <td colspan="4" class="text-center py-5 text-muted">
                             <i class="bi bi-shield-check text-success fs-1 d-block mb-2"></i>
-                            Ananda tidak memiliki catatan pelanggaran pada periode ini.
+                            ${i18nWaliPel.noViolations}
                         </td>
                     </tr>`;
                 mobileHtml = `
                     <div class="card p-4 text-center text-muted shadow-sm border-0">
                         <i class="bi bi-emoji-smile text-primary fs-2 mb-2"></i>
-                        <p class="mb-0">Alhamdulillah, belum ada catatan pelanggaran.</p>
+                        <p class="mb-0">${i18nWaliPel.noViolationsMobile}</p>
                     </div>`;
             } else {
                 // Tampilan jika ADA pelanggaran
@@ -196,7 +207,7 @@ function loadData() {
                         <tr>
                             <td>${p.tanggal}</td>
                             <td><div class="fw-bold">${p.nama_pelanggaran}</div></td>
-                            <td><span class="badge bg-danger">${p.skor} Poin</span></td>
+                            <td><span class="badge bg-danger">${p.skor} ${i18nWaliPel.pointsWord}</span></td>
                             <td class="text-center">
                                 <button class="btn btn-sm btn-light border" onclick="showDetail('${p.nama_pelanggaran}', '${p.skor}', '${p.keterangan || "-"}')">
                                     <i class="bi bi-search text-danger"></i>
@@ -209,10 +220,10 @@ function loadData() {
                         <div class="card mobile-card p-3 shadow-sm border-0 mb-3 bg-white">
                             <div class="d-flex justify-content-between mb-2">
                                 <span class="small text-muted"><i class="bi bi-calendar-event me-1"></i>${p.tanggal}</span>
-                                <span class="badge bg-danger">${p.skor} Poin</span>
+                                <span class="badge bg-danger">${p.skor} ${i18nWaliPel.pointsWord}</span>
                             </div>
                             <div class="fw-bold text-dark mb-3">${p.nama_pelanggaran}</div>
-                            <button class="btn btn-sm btn-outline-danger w-100" onclick="showDetail('${p.nama_pelanggaran}', '${p.skor}', '${p.keterangan || "-"}')">Lihat Detail</button>
+                            <button class="btn btn-sm btn-outline-danger w-100" onclick="showDetail('${p.nama_pelanggaran}', '${p.skor}', '${p.keterangan || "-"}')">${i18nWaliPel.viewDetail}</button>
                         </div>`;
                 });
             }
@@ -226,7 +237,7 @@ function loadData() {
         <tr>
             <td colspan="4" class="text-center text-danger py-4">
                 <i class="bi bi-exclamation-triangle-fill d-block mb-2"></i>
-                Gagal memuat data: ${err.message}
+                ${i18nWaliPel.failedLoad} ${err.message}
             </td>
         </tr>`;
 });
@@ -238,15 +249,15 @@ function loadData() {
 function showDetail(nama, skor, ket) {
     const content = `
         <div class="mb-3">
-            <label class="small text-muted d-block text-uppercase fw-bold">Jenis Pelanggaran:</label>
+            <label class="small text-muted d-block text-uppercase fw-bold">${i18nWaliPel.violationTypeLabel}</label>
             <div class="fw-bold fs-5 text-dark">${nama}</div>
         </div>
         <div class="mb-3">
-            <label class="small text-muted d-block text-uppercase fw-bold">Poin:</label>
-            <div class="badge bg-danger fs-6">${skor} Poin</div>
+            <label class="small text-muted d-block text-uppercase fw-bold">${i18nWaliPel.pointsLabel}</label>
+            <div class="badge bg-danger fs-6">${skor} ${i18nWaliPel.pointsWord}</div>
         </div>
         <div class="mb-0">
-            <label class="small text-muted d-block text-uppercase fw-bold">Keterangan:</label>
+            <label class="small text-muted d-block text-uppercase fw-bold">${i18nWaliPel.notesLabel}</label>
             <div class="p-3 bg-light rounded border mt-2" style="white-space: pre-wrap; font-size: 0.95rem;">${ket}</div>
         </div>
     `;

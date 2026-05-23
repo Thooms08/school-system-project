@@ -32,7 +32,7 @@ class WaliKeaktifanController extends Controller
                 ->first();
 
             if (!$murid) {
-                return response()->json(['error' => 'Data ananda tidak ditemukan'], 404);
+                return response()->json(['error' => __('messages.child_data_not_found')], 404);
             }
 
             // 3. Ambil riwayat keaktifan berdasarkan ID Murid dan Tanggal

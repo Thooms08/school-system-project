@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelola Informasi Sekolah</title>
+    <title>{{ __('dashboard.manage_info') }}</title>
     @if(isset($sekolah->logo))
     <link rel="icon" type="image/png" href="{{ asset($sekolah->logo) }}">
     @else
@@ -135,8 +135,8 @@
                             <i class="bi bi-list fs-4"></i>
                         </button>
                         <div class="ms-3">
-                            <h4 class="mb-0 fw-bold text-success">Kelola Informasi</h4>
-                            <p class="text-muted small mb-0">Update konten informasi sekolah Anda</p>
+                            <h4 class="mb-0 fw-bold text-success">{{ __('dashboard.manage_info') }}</h4>
+                            <p class="text-muted small mb-0">{{ __('dashboard.update_info_subtitle') }}</p>
                         </div>
                     </div>
                 </div>
@@ -152,22 +152,22 @@
                     <ul class="nav nav-pills nav-fill" id="pills-tab" role="tablist">
                         <li class="nav-item">
                             <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#tab-kegiatan">
-                                <i class="bi bi-camera me-2"></i> Kegiatan
+                                <i class="bi bi-camera me-2"></i> {{ __('dashboard.activities') }}
                             </button>
                         </li>
                         <li class="nav-item">
                             <button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-program">
-                                <i class="bi bi-mortarboard me-2"></i> Program
+                                <i class="bi bi-mortarboard me-2"></i> {{ __('dashboard.programs') }}
                             </button>
                         </li>
                         <li class="nav-item">
                             <button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-prestasi">
-                                <i class="bi bi-trophy me-2"></i> Prestasi
+                                <i class="bi bi-trophy me-2"></i> {{ __('dashboard.achievements') }}
                             </button>
                         </li>
                         <li class="nav-item">
                             <button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-artikel">
-                                <i class="bi bi-newspaper me-2"></i> Artikel
+                                <i class="bi bi-newspaper me-2"></i> {{ __('dashboard.articles') }}
                             </button>
                         </li>
                     </ul>
@@ -177,23 +177,23 @@
                     
                     <div class="tab-pane fade show active" id="tab-kegiatan">
                         <div class="card p-4">
-                            <h5 class="fw-bold mb-3">Tambah Dokumentasi Kegiatan</h5>
+                            <h5 class="fw-bold mb-3">{{ __('dashboard.add_activity') }}</h5>
                             <form action="{{ route('kegiatan.store') }}" method="POST" enctype="multipart/form-data" class="row g-3 mb-4">
                                 @csrf
                                 <div class="col-md-4">
-                                    <label class="form-label">Label Foto</label>
-                                    <input type="text" name="label_foto" class="form-control" required placeholder="Nama kegiatan">
+                                    <label class="form-label">{{ __('dashboard.photo_label') }}</label>
+                                    <input type="text" name="label_foto" class="form-control" required placeholder="{{ __('dashboard.activity_name') }}">
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-label">Foto Kegiatan</label>
+                                    <label class="form-label">{{ __('dashboard.activity_photo') }}</label>
                                     <input type="file" name="foto_kegiatan" class="form-control" required>
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-label">Deskripsi (Opsional)</label>
-                                    <input type="text" name="deskripsi_foto" class="form-control" placeholder="Keterangan singkat">
+                                    <label class="form-label">{{ __('dashboard.description_optional') }}</label>
+                                    <input type="text" name="deskripsi_foto" class="form-control" placeholder="{{ __('dashboard.brief_notes_placeholder') }}">
                                 </div>
                                 <div class="col-12 text-end">
-                                    <button type="submit" class="btn btn-success px-4">Simpan Kegiatan</button>
+                                    <button type="submit" class="btn btn-success px-4">{{ __('dashboard.save_activity') }}</button>
                                 </div>
                             </form>
                             <hr>
@@ -201,9 +201,9 @@
                                 <table class="table table-hover align-middle">
                                     <thead>
                                         <tr>
-                                            <th>Foto</th>
-                                            <th>Label</th>
-                                            <th>Aksi</th>
+                                            <th>{{ __('general.photo') }}</th>
+                                            <th>{{ __('dashboard.photo_label') }}</th>
+                                            <th>{{ __('general.action') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -217,7 +217,7 @@
                                                     </button>
                                                 <form action="{{ route('kegiatan.destroy', $k->id) }}" method="POST" class="d-inline">
                                                     @csrf @method('DELETE')
-                                                    <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus data ini?')"><i class="bi bi-trash"></i></button>
+                                                    <button class="btn btn-sm btn-outline-danger" onclick="return confirm(@json(__('dashboard.confirm_delete_item')))"><i class="bi bi-trash"></i></button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -230,24 +230,24 @@
 
                     <div class="tab-pane fade" id="tab-program">
                         <div class="card p-4">
-                            <h5 class="fw-bold mb-3">Tambah Program Sekolah</h5>
+                            <h5 class="fw-bold mb-3">{{ __('dashboard.add_program') }}</h5>
                             <form action="{{ route('program.store') }}" method="POST" class="row g-3 mb-4">
                                 @csrf
                                 <div class="col-md-6">
-                                    <label class="form-label">Nama Program</label>
+                                    <label class="form-label">{{ __('dashboard.program_name') }}</label>
                                     <input type="text" name="nama_program" class="form-control" required>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">Deskripsi Singkat (Max 150 Karakter)</label>
+                                    <label class="form-label">{{ __('dashboard.short_description') }}</label>
                                     <input type="text" name="deskripsi_program" class="form-control" maxlength="150">
                                 </div>
                                 <div class="col-12 text-end">
-                                    <button type="submit" class="btn btn-success px-4">Simpan Program</button>
+                                    <button type="submit" class="btn btn-success px-4">{{ __('dashboard.save_program') }}</button>
                                 </div>
                             </form>
                             <hr>
                             <table class="table">
-                                <thead><tr><th>Nama Program</th><th>Deskripsi</th><th>Aksi</th></tr></thead>
+                                <thead><tr><th>{{ __('dashboard.program_name') }}</th><th>{{ __('general.description') }}</th><th>{{ __('general.action') }}</th></tr></thead>
                                 <tbody>
                                     @foreach($programs as $p)
                                     <tr>
@@ -271,23 +271,23 @@
 
                     <div class="tab-pane fade" id="tab-prestasi">
                         <div class="card p-4">
-                            <h5 class="fw-bold mb-3">Tambah Prestasi Siswa</h5>
+                            <h5 class="fw-bold mb-3">{{ __('dashboard.add_achievement') }}</h5>
                             <form action="{{ route('prestasi.store') }}" method="POST" enctype="multipart/form-data" class="row g-3 mb-4">
                                 @csrf
                                 <div class="col-md-6">
-                                    <label class="form-label">Judul Prestasi</label>
+                                    <label class="form-label">{{ __('dashboard.achievement_title') }}</label>
                                     <input type="text" name="judul_prestasi" class="form-control" required>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">Foto-foto Prestasi (Bisa banyak)</label>
+                                    <label class="form-label">{{ __('dashboard.achievement_photos') }}</label>
                                     <input type="file" name="foto_prestasi[]" class="form-control" multiple required>
                                 </div>
                                 <div class="col-12">
-                                    <label class="form-label">Deskripsi Prestasi</label>
+                                    <label class="form-label">{{ __('dashboard.achievement_desc') }}</label>
                                     <textarea name="deskripsi_prestasi" class="form-control" rows="2"></textarea>
                                 </div>
                                 <div class="col-12 text-end">
-                                    <button type="submit" class="btn btn-success px-4">Simpan Prestasi</button>
+                                    <button type="submit" class="btn btn-success px-4">{{ __('dashboard.save_achievement') }}</button>
                                 </div>
                             </form>
                             <div class="row">
@@ -302,11 +302,11 @@
                                         </div>
                                         <button class="btn btn-sm btn-outline-success mb-1 p-0" 
                                             onclick="editPrestasi('{{ $pres->id }}', '{{ $pres->judul_prestasi }}', `{{ $pres->deskripsi_prestasi }}`, {{ $pres->fotos->toJson() }})">
-                                            <i class="bi bi-pencil-square fs-5"></i>Edit
+                                            <i class="bi bi-pencil-square fs-5"></i>{{ __('general.edit') }}
                                         </button>
                                         <form action="{{ route('prestasi.destroy', $pres->id) }}" method="POST">
                                             @csrf @method('DELETE')
-                                            <button class="btn btn-sm btn-outline-danger w-100">Hapus</button>
+                                            <button class="btn btn-sm btn-outline-danger w-100">{{ __('general.delete') }}</button>
                                         </form>
                                     </div>
                                 </div>
@@ -317,34 +317,34 @@
 
                 <div class="tab-pane fade" id="tab-artikel">
                 <div class="card p-4">
-                    <h5 class="fw-bold mb-3" id="form-artikel-title">Tulis Artikel Baru</h5>
+                    <h5 class="fw-bold mb-3" id="form-artikel-title">{{ __('dashboard.write_article') }}</h5>
                     
                     <form id="form-artikel" action="{{ route('artikel.store') }}" method="POST" enctype="multipart/form-data" class="row g-3">
                         @csrf
                         <input type="hidden" name="_method" id="artikel-method" value="POST">
 
                         <div class="col-md-8">
-                            <label class="form-label">Judul Artikel</label>
+                            <label class="form-label">{{ __('dashboard.article_title') }}</label>
                             <input type="text" name="judul_artikel" id="art_judul" class="form-control" required>
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label">Teaser</label>
+                            <label class="form-label">{{ __('dashboard.teaser') }}</label>
                             <input type="text" name="teaser" id="art_teaser" class="form-control">
                         </div>
                         <div class="col-12">
-                            <label class="form-label">Isi Artikel</label>
+                            <label class="form-label">{{ __('dashboard.article_content_label') }}</label>
                             <textarea name="deskripsi" id="art_desc" class="form-control" rows="5" required></textarea>
                         </div>
 
                         <div id="container-foto-lama" class="col-12 d-none">
-                            <label class="form-label fw-bold text-success">Foto Saat Ini (Klik × untuk menghapus)</label>
+                            <label class="form-label fw-bold text-success">{{ __('dashboard.current_photos') }}</label>
                             <div id="preview-foto-artikel" class="d-flex flex-wrap gap-3 p-3 border rounded bg-light">
                                 </div>
                         </div>
                         
                         <div class="col-12">
                             <div class="d-flex justify-content-between align-items-center mb-2">
-                                <h6 class="fw-bold mb-0">Foto & Sumber Baru</h6>
+                                <h6 class="fw-bold mb-0">{{ __('dashboard.new_photos_sources') }}</h6>
                                 <!--<button type="button" class="btn btn-sm btn-outline-success" onclick="addPhotoRow()">
                                     <i class="bi bi-plus"></i> Tambah Baris
                                 </button>-->
@@ -352,28 +352,28 @@
                             <div id="artikel-photo-wrapper">
                                 <div class="row g-2 mb-2">
                                     <div class="col-md-5"><input type="file" name="foto_artikel[]" class="form-control"></div>
-                                    <div class="col-md-5"><input type="text" name="sumber_foto[]" class="form-control" placeholder="Sumber Foto"></div>
+                                    <div class="col-md-5"><input type="text" name="sumber_foto[]" class="form-control" placeholder="{{ __('dashboard.photo_source') }}"></div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="col-12 text-center pt-3">
-                            <button type="button" id="btn-cancel-artikel" class="btn btn-outline-secondary btn-lg px-4 d-none" onclick="cancelEditArtikel()">Batal</button>
-                            <button type="submit" id="btn-submit-artikel" class="btn btn-success btn-lg px-5 shadow">Publikasikan</button>
+                            <button type="button" id="btn-cancel-artikel" class="btn btn-outline-secondary btn-lg px-4 d-none" onclick="cancelEditArtikel()">{{ __('dashboard.cancel_btn') }}</button>
+                            <button type="submit" id="btn-submit-artikel" class="btn btn-success btn-lg px-5 shadow">{{ __('general.publish') }}</button>
                         </div>
                     </form>
                     <hr class="my-5">
                 </div>
 
-                        <h5 class="fw-bold mb-3">Daftar Artikel Terpublikasi</h5>
+                        <h5 class="fw-bold mb-3">{{ __('dashboard.published_articles') }}</h5>
                         <div class="table-responsive">
                             <table class="table table-hover align-middle">
                                 <thead class="table-light">
                                     <tr>
-                                        <th width="150">Thumbnail</th>
-                                        <th>Judul & Ringkasan</th>
-                                        <th width="150">Tanggal</th>
-                                        <th width="100" class="text-center">Aksi</th>
+                                        <th width="150">{{ __('dashboard.thumbnail') }}</th>
+                                        <th>{{ __('dashboard.title_summary') }}</th>
+                                        <th width="150">{{ __('general.date') }}</th>
+                                        <th width="100" class="text-center">{{ __('general.action') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -384,14 +384,14 @@
                                                 <img src="{{ asset($art->fotos->first()->foto_artikel) }}" class="img-thumbnail-custom shadow-sm" style="width: 120px; height: 80px;">
                                             @else
                                                 <div class="bg-secondary text-white d-flex align-items-center justify-content-center rounded" style="width: 120px; height: 80px; font-size: 0.7rem;">
-                                                    Tanpa Foto
+                                                    {{ __('dashboard.no_photo_label') }}
                                                 </div>
                                             @endif
                                         </td>
                                         <td>
                                             <div class="fw-bold text-dark">{{ $art->judul }}</div>
                                             <small class="text-muted d-block">{{ Str::limit($art->teaser, 70) }}</small>
-                                            <span class="badge bg-light text-success border mt-1">{{ $art->fotos->count() }} Foto</span>
+                                            <span class="badge bg-light text-success border mt-1">{{ __('dashboard.photos_count_badge', ['count' => $art->fotos->count()]) }}</span>
                                         </td>
                                         <td>
                                             <small class="text-muted"><i class="bi bi-calendar3 me-1"></i> {{ $art->created_at->format('d M Y') }}</small>
@@ -401,7 +401,7 @@
                                                 onclick="editArtikel('{{ $art->id }}', '{{ $art->judul }}', '{{ $art->teaser }}', `{{ $art->deskripsi }}`, {{ $art->fotos->toJson() }})">
                                                 <i class="bi bi-pencil-square"></i>
                                             </button>
-                                            <form action="{{ route('artikel.destroy', $art->id) }}" method="POST" onsubmit="return confirm('Hapus artikel ini?')">
+                                            <form action="{{ route('artikel.destroy', $art->id) }}" method="POST" onsubmit="return confirm(@json(__('dashboard.confirm_delete_article')))">
                                                 @csrf @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-outline-danger">
                                                     <i class="bi bi-trash"></i>
@@ -413,7 +413,7 @@
                                     <tr>
                                         <td colspan="4" class="text-center py-5 text-muted">
                                             <i class="bi bi-journal-x display-4 d-block mb-2"></i>
-                                            Belum ada artikel yang diterbitkan.
+                                            {{ __('dashboard.no_articles') }}
                                         </td>
                                     </tr>
                                     @endforelse
@@ -432,25 +432,25 @@
         <form id="formEditKegiatan" method="POST" enctype="multipart/form-data" class="modal-content border-0 shadow">
             @csrf @method('PUT')
             <div class="modal-header bg-success text-white">
-                <h5 class="modal-title fw-bold">Edit Kegiatan</h5>
+                <h5 class="modal-title fw-bold">{{ __('dashboard.edit_activity') }}</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4 row g-3">
                 <div class="col-12">
-                    <label class="form-label fw-bold">Label Foto</label>
+                    <label class="form-label fw-bold">{{ __('dashboard.photo_label') }}</label>
                     <input type="text" name="label_foto" id="edit_kegiatan_label" class="form-control" required>
                 </div>
                 <div class="col-12">
-                    <label class="form-label fw-bold">Ganti Foto (Kosongkan jika tidak ingin ganti)</label>
+                    <label class="form-label fw-bold">{{ __('dashboard.replace_photo') }}</label>
                     <input type="file" name="foto_kegiatan" class="form-control">
                 </div>
                 <div class="col-12">
-                    <label class="form-label fw-bold">Deskripsi</label>
+                    <label class="form-label fw-bold">{{ __('general.description') }}</label>
                     <input type="text" name="deskripsi_foto" id="edit_kegiatan_desc" class="form-control">
                 </div>
             </div>
             <div class="modal-footer border-0">
-                <button type="submit" class="btn btn-success w-100">Simpan Perubahan</button>
+                <button type="submit" class="btn btn-success w-100">{{ __('dashboard.save_changes_btn') }}</button>
             </div>
         </form>
     </div>
@@ -461,21 +461,21 @@
         <form id="formEditProgram" method="POST" class="modal-content border-0 shadow">
             @csrf @method('PUT')
             <div class="modal-header bg-success text-white">
-                <h5 class="modal-title fw-bold">Edit Program</h5>
+                <h5 class="modal-title fw-bold">{{ __('dashboard.edit_program') }}</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4 row g-3">
                 <div class="col-12">
-                    <label class="form-label fw-bold">Nama Program</label>
+                    <label class="form-label fw-bold">{{ __('dashboard.program_name') }}</label>
                     <input type="text" name="nama_program" id="edit_program_nama" class="form-control" required>
                 </div>
                 <div class="col-12">
-                    <label class="form-label fw-bold">Deskripsi</label>
+                    <label class="form-label fw-bold">{{ __('general.description') }}</label>
                     <input type="text" name="deskripsi_program" id="edit_program_desc" class="form-control">
                 </div>
             </div>
             <div class="modal-footer border-0">
-                <button type="submit" class="btn btn-success w-100">Simpan Perubahan</button>
+                <button type="submit" class="btn btn-success w-100">{{ __('dashboard.save_changes_btn') }}</button>
             </div>
         </form>
     </div>
@@ -485,33 +485,33 @@
         <form id="formEditPrestasi" method="POST" enctype="multipart/form-data" class="modal-content border-0 shadow">
             @csrf @method('PUT')
             <div class="modal-header bg-success text-white">
-                <h5 class="modal-title fw-bold">Edit Prestasi</h5>
+                <h5 class="modal-title fw-bold">{{ __('dashboard.edit_achievement') }}</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4 row g-3">
                 <div class="col-12">
-                    <label class="form-label fw-bold">Judul Prestasi</label>
+                    <label class="form-label fw-bold">{{ __('dashboard.achievement_title') }}</label>
                     <input type="text" name="judul_prestasi" id="edit_prestasi_judul" class="form-control" required>
                 </div>
                 
                 <div class="col-12">
-                    <label class="form-label fw-bold">Foto Saat Ini (Klik sampah untuk hapus)</label>
+                    <label class="form-label fw-bold">{{ __('dashboard.current_photos_delete') }}</label>
                     <div id="preview-foto-lama" class="d-flex flex-wrap gap-2 p-2 border rounded bg-light">
                         </div>
                 </div>
 
                 <div class="col-12">
-                    <label class="form-label fw-bold">Tambah Foto Baru</label>
+                    <label class="form-label fw-bold">{{ __('dashboard.add_new_photos') }}</label>
                     <input type="file" name="foto_prestasi[]" class="form-control" multiple>
                 </div>
 
                 <div class="col-12">
-                    <label class="form-label fw-bold">Deskripsi</label>
+                    <label class="form-label fw-bold">{{ __('general.description') }}</label>
                     <textarea name="deskripsi_prestasi" id="edit_prestasi_desc" class="form-control" rows="3"></textarea>
                 </div>
             </div>
             <div class="modal-footer border-0">
-                <button type="submit" class="btn btn-success w-100 py-2 shadow-sm">Simpan Perubahan</button>
+                <button type="submit" class="btn btn-success w-100 py-2 shadow-sm">{{ __('dashboard.save_changes_btn') }}</button>
             </div>
         </form>
     </div>
@@ -519,6 +519,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
+        const i18nInfo = {
+            editArticlePrefix: @json(__('dashboard.edit_article_prefix')),
+            photoSourcePlaceholder: @json(__('dashboard.photo_source')),
+            noPhotos: @json(__('dashboard.no_photos')),
+            failedDeletePhoto: @json(__('dashboard.failed_delete_photo')),
+        };
         document.addEventListener("DOMContentLoaded", function() {
             const tabTriggerList = [].slice.call(document.querySelectorAll('#pills-tab button'));
     const activeTabTarget = localStorage.getItem('activeTab');
@@ -564,7 +570,7 @@
             div.className = 'row g-2 mb-2 align-items-center';
             div.innerHTML = `
                 <div class="col-md-5"><input type="file" name="foto_artikel[]" class="form-control"></div>
-                <div class="col-md-5"><input type="text" name="sumber_foto[]" class="form-control" placeholder="Sumber Foto"></div>
+                <div class="col-md-5"><input type="text" name="sumber_foto[]" class="form-control" placeholder="${i18nInfo.photoSourcePlaceholder}"></div>
                 <div class="col-md-2"><button type="button" class="btn btn-sm btn-outline-danger w-100" onclick="this.parentElement.parentElement.remove()"><i class="bi bi-trash"></i></button></div>
             `;
             wrapper.appendChild(div);
@@ -585,8 +591,8 @@
 
     function editArtikel(id, judul, teaser, desc, fotos) {
     // 1. Ubah Status Form ke Mode Edit
-    document.getElementById('form-artikel-title').innerText = "Edit Artikel: " + judul;
-    document.getElementById('btn-submit-artikel').innerText = "Simpan Perubahan";
+    document.getElementById('form-artikel-title').innerText = i18nInfo.editArticlePrefix + judul;
+    document.getElementById('btn-submit-artikel').innerText = @json(__('dashboard.save_changes_btn'));
     document.getElementById('btn-submit-artikel').className = "btn btn-success btn-lg px-5 shadow";
     document.getElementById('btn-cancel-artikel').classList.remove('d-none');
 
@@ -625,7 +631,7 @@
 }
 
 function ajaxHapusFotoArtikel(fotoId) {
-    if(confirm('Hapus foto ini dari server?')) {
+    if(confirm(@json(__('dashboard.confirm_delete_photo'))) {
         fetch(`/informasi/artikel/foto/${fotoId}`, {
             method: 'DELETE',
             headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
@@ -651,7 +657,7 @@ function cancelEditArtikel() {
     container.innerHTML = ''; // Bersihkan kontainer
 
     if (fotos.length === 0) {
-        container.innerHTML = '<small class="text-muted">Tidak ada foto.</small>';
+        container.innerHTML = '<small class="text-muted">' + i18nInfo.noPhotos + '</small>';
     }
 
     fotos.forEach(foto => {
@@ -675,7 +681,7 @@ function cancelEditArtikel() {
 
 // Fungsi AJAX untuk hapus foto tanpa tutup modal
 function hapusFotoSatu(fotoId) {
-    if (confirm('Hapus foto ini secara permanen?')) {
+    if (confirm(@json(__('dashboard.confirm_delete_photo_permanent'))) {
         fetch(`/informasi/prestasi/foto/${fotoId}`, {
             method: 'DELETE',
             headers: {
@@ -688,7 +694,7 @@ function hapusFotoSatu(fotoId) {
             // Hapus elemen dari tampilan modal
             document.getElementById(`foto-wrapper-${fotoId}`).remove();
         })
-        .catch(error => alert('Gagal menghapus foto.'));
+        .catch(error => alert(i18nInfo.failedDeletePhoto));
     }
 }
     </script>

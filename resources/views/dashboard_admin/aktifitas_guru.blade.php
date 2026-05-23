@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aktivitas Guru</title>
+    <title>{{ __('menu.teacher_activity') }}</title>
     @if(isset($sekolah->logo))
     <link rel="icon" type="image/png" href="{{ asset($sekolah->logo) }}">
     @else
@@ -35,24 +35,24 @@
                 <div class="d-flex align-items-center">
                     <button type="button" id="sidebarCollapse"><i class="bi bi-list fs-4"></i></button>
                     <div class="ms-3">
-                        <h4 class="mb-0 fw-bold">Monitoring Aktivitas Guru</h4>
-                        <p class="text-muted small mb-0">Statistik persentase rekapitulasi guru harian</p>
+                        <h4 class="mb-0 fw-bold">{{ __('dashboard.teacher_activity_monitoring') }}</h4>
+                        <p class="text-muted small mb-0">{{ __('dashboard.teacher_activity_subtitle') }}</p>
                     </div>
                 </div>
             </div>
 
             <div class="card p-3 mb-4">
                 <div class="d-flex flex-wrap gap-2">
-                    <button class="btn btn-light btn-filter border" onclick="updateChart('1week', this)">1 Minggu</button>
-                    <button class="btn btn-light btn-filter border active" onclick="updateChart('1month', this)">1 Bulan</button>
-                    <button class="btn btn-light btn-filter border" onclick="updateChart('1year', this)">1 Tahun</button>
+                    <button class="btn btn-light btn-filter border" onclick="updateChart('1week', this)">{{ __('dashboard.last_1_week') }}</button>
+                    <button class="btn btn-light btn-filter border active" onclick="updateChart('1month', this)">{{ __('dashboard.last_1_month') }}</button>
+                    <button class="btn btn-light btn-filter border" onclick="updateChart('1year', this)">{{ __('dashboard.last_1_year') }}</button>
                 </div>
             </div>
 
             <div class="card p-4">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h5 class="fw-bold mb-0"><i class="bi bi-bar-chart-fill me-2 text-success"></i>Grafik Keaktifan Guru</h5>
-                    <div class="small text-muted" id="rangeLabel">Range: 30 Hari Terakhir</div>
+                    <h5 class="fw-bold mb-0"><i class="bi bi-bar-chart-fill me-2 text-success"></i>{{ __('dashboard.teacher_activeness_chart_title') }}</h5>
+                    <div class="small text-muted" id="rangeLabel"></div>
                 </div>
                 <div class="chart-container">
                     <canvas id="teacherChart"></canvas>
@@ -63,10 +63,18 @@
 </div>
  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+    const i18nAktifitasGuru = {
+        rangeLabels: {
+            '1week': @json(__('dashboard.range_label_7_days')),
+            '1month': @json(__('dashboard.range_label_30_days')),
+            '1year': @json(__('dashboard.range_label_1_year')),
+        },
+        rangeDisplay: @json(__('dashboard.range_display')),
+        activenessPercent: @json(__('dashboard.activeness_percent_label')),
+    };
     let teacherChart;
     const ctx = document.getElementById('teacherChart').getContext('2d');
 
-    // Fungsi Inisialisasi Chart
     function initChart(data) {
         teacherChart = new Chart(ctx, {
             type: 'bar',
@@ -85,7 +93,7 @@
                     legend: { display: false },
                     tooltip: {
                         callbacks: {
-                            label: (context) => `Keaktifan: ${context.raw}%`
+                            label: (context) => i18nAktifitasGuru.activenessPercent.replace(':value', context.raw)
                         }
                     }
                 }
@@ -110,15 +118,11 @@
         });
     }
 
-    // Fungsi Update Chart via AJAX
     function updateChart(range, btn) {
-        // Update UI Button
         document.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
 
-        // Update Label
-        const labels = {'1week': '7 Hari Terakhir', '1month': '30 Hari Terakhir', '1year': '1 Tahun Terakhir'};
-        document.getElementById('rangeLabel').innerText = `Range: ${labels[range]}`;
+        document.getElementById('rangeLabel').innerText = i18nAktifitasGuru.rangeDisplay.replace(':period', i18nAktifitasGuru.rangeLabels[range]);
 
         fetch(`{{ route('admin.aktifitas.data') }}?range=${range}`)
             .then(res => res.json())
@@ -132,13 +136,11 @@
             });
     }
 
-    // Load Default (1 Bulan)
     document.addEventListener('DOMContentLoaded', () => {
         const defaultBtn = document.querySelector('.btn-filter.active');
         updateChart('1month', defaultBtn);
     });
 
-    // Sidebar Hamburger Menu Logic
     document.getElementById('sidebarCollapse').onclick = () => {
         document.getElementById('sidebar').classList.toggle('inactive');
     };

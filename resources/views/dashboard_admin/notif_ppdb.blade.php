@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Notifikasi & Pengaturan PPDB</title>
+    <title>{{ __('dashboard.ppdb_management') }}</title>
     @if(isset($sekolah->logo))
     <link rel="icon" type="image/png" href="{{ asset($sekolah->logo) }}">
     @else
@@ -50,22 +50,22 @@
                 <div class="d-flex align-items-center">
                     <button type="button" id="sidebarCollapse"><i class="bi bi-list fs-4"></i></button>
                     <div class="ms-3">
-                        <h4 class="mb-0 fw-bold">Manajemen PPDB</h4>
-                        <p class="text-muted small mb-0">Kelola pendaftaran siswa baru dan status sistem</p>
+                        <h4 class="mb-0 fw-bold">{{ __('dashboard.ppdb_management') }}</h4>
+                        <p class="text-muted small mb-0">{{ __('dashboard.ppdb_subtitle') }}</p>
                     </div>
                 </div>
 
                 <button id="btnTogglePPDB" class="btn btn-lg rounded-pill px-4 fw-bold shadow-sm transition">
-                    <span id="ppdbStatusText"><i class="spinner-border spinner-border-sm me-2"></i>Memuat...</span>
+                    <span id="ppdbStatusText"><i class="spinner-border spinner-border-sm me-2"></i>{{ __('dashboard.loading') }}</span>
                 </button>
             </div>
 
             <div class="card border-0 shadow-sm p-4 mb-4" style="border-radius: 15px;">
-                <h5 class="fw-bold mb-4 text-dark"><i class="bi bi-bell-fill me-2 text-warning"></i>Pendaftaran Pending</h5>
+                <h5 class="fw-bold mb-4 text-dark"><i class="bi bi-bell-fill me-2 text-warning"></i>{{ __('dashboard.pending_registrations') }}</h5>
                 <div id="notif-container">
                     <div class="text-center py-5">
                         <div class="spinner-border text-success" role="status"></div>
-                        <p class="mt-2 text-muted">Memeriksa pendaftaran baru...</p>
+                        <p class="mt-2 text-muted">{{ __('dashboard.checking_new') }}</p>
                     </div>
                 </div>
             </div>
@@ -77,13 +77,13 @@
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content border-0 shadow">
             <div class="modal-header bg-success text-white">
-                <h5 class="modal-title fw-bold"><i class="bi bi-person-vcard me-2"></i>Data Pendaftaran Lengkap</h5>
+                <h5 class="modal-title fw-bold"><i class="bi bi-person-vcard me-2"></i>{{ __('dashboard.full_registration_data') }}</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4" id="detail-content">
                 </div>
             <div class="modal-footer bg-light">
-                <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">{{ __('general.close') }}</button>
             </div>
         </div>
     </div>
@@ -95,8 +95,38 @@
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     const btnToggle = document.getElementById('btnTogglePPDB');
     const statusText = document.getElementById('ppdbStatusText');
+    const i18n = {
+        closePpdb: @json(__('dashboard.close_ppdb')),
+        openPpdb: @json(__('dashboard.open_ppdb')),
+        confirmClose: @json(__('dashboard.confirm_close_ppdb')),
+        confirmOpen: @json(__('dashboard.confirm_open_ppdb')),
+        allProcessed: @json(__('dashboard.all_processed')),
+        pendingVerification: @json(__('dashboard.pending_verification')),
+        detailData: @json(__('dashboard.detail_data')),
+        confirmBtn: @json(__('dashboard.confirm_btn')),
+        loadingRegistrant: @json(__('dashboard.loading_registrant')),
+        confirmImportant: @json(__('dashboard.confirm_important')),
+        studentIdentity: @json(__('dashboard.student_identity')),
+        domicileAddress: @json(__('dashboard.domicile_address')),
+        fatherData: @json(__('dashboard.father_data')),
+        motherData: @json(__('dashboard.mother_data')),
+        nameLabel: @json(__('dashboard.name_label')),
+        nisnNik: @json(__('dashboard.nisn_nik')),
+        gender: @json(__('dashboard.gender')),
+        male: @json(__('dashboard.male')),
+        female: @json(__('dashboard.female')),
+        birthPlaceDate: @json(__('dashboard.birth_place_date')),
+        emailPhone: @json(__('dashboard.email_phone')),
+        originSchool: @json(__('dashboard.origin_school')),
+        physical: @json(__('dashboard.physical')),
+        region: @json(__('dashboard.region')),
+        addressDetail: @json(__('dashboard.address_detail')),
+        occupation: @json(__('dashboard.occupation')),
+        income: @json(__('dashboard.income')),
+        nisnPrefix: @json(__('dashboard.nisn')) + ': ',
+    };
+    let ppdbIsOpen = false;
 
-    // --- 1. FUNGSI STATUS PPDB (BUKA/TUTUP) ---
     function checkPPDBStatus() {
         fetch("{{ route('admin.ppdb.status') }}")
             .then(res => res.json())
@@ -106,18 +136,19 @@
     }
 
     function updateButtonUI(isOpen) {
+        ppdbIsOpen = isOpen;
         if (isOpen) {
             btnToggle.className = "btn btn-danger btn-lg rounded-pill px-4 fw-bold shadow-sm transition";
-            statusText.innerHTML = '<i class="bi bi-x-circle me-2"></i> Tutup PPDB';
+            statusText.innerHTML = `<i class="bi bi-x-circle me-2"></i> ${i18n.closePpdb}`;
         } else {
             btnToggle.className = "btn btn-success btn-lg rounded-pill px-4 fw-bold shadow-sm transition";
-            statusText.innerHTML = '<i class="bi bi-check-circle me-2"></i> Buka PPDB';
+            statusText.innerHTML = `<i class="bi bi-check-circle me-2"></i> ${i18n.openPpdb}`;
         }
     }
 
     btnToggle.onclick = function() {
-        const action = statusText.innerText.includes('Tutup') ? 'MENUTUP' : 'MEMBUKA';
-        if (!confirm(`Konfirmasi: Apakah Anda yakin ingin ${action} akses PPDB Online bagi publik?`)) return;
+        const msg = ppdbIsOpen ? i18n.confirmClose : i18n.confirmOpen;
+        if (!confirm(msg)) return;
 
         fetch("{{ route('admin.ppdb.toggle') }}", {
             method: 'POST',
@@ -163,7 +194,7 @@
                     container.innerHTML = `
                         <div class="text-center py-5">
                             <i class="bi bi-check2-circle text-success" style="font-size: 3rem;"></i>
-                            <p class="mt-3 text-muted">Semua pendaftaran telah diproses.</p>
+                            <p class="mt-3 text-muted">${i18n.allProcessed}</p>
                         </div>`;
                     return;
                 }
@@ -178,15 +209,15 @@
                             <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
                                 <div>
                                     <h6 class="fw-bold mb-1 text-success">${m.nama_lengkap}</h6>
-                                    <small class="text-muted d-block mb-2"><i class="bi bi-person-vcard"></i> NISN: ${m.nisn} | <i class="bi bi-calendar3"></i> ${date}</small>
-                                    <span class="badge badge-pending px-3 py-2">PENDING VERIFIKASI</span>
+                                    <small class="text-muted d-block mb-2"><i class="bi bi-person-vcard"></i> ${i18n.nisnPrefix}${m.nisn} | <i class="bi bi-calendar3"></i> ${date}</small>
+                                    <span class="badge badge-pending px-3 py-2">${i18n.pendingVerification}</span>
                                 </div>
                                 <div class="d-flex gap-2">
                                     <button class="btn btn-outline-success btn-sm px-3 rounded-pill" onclick="viewDetail(${m.id})">
-                                        <i class="bi bi-eye"></i> Detail Data
+                                        <i class="bi bi-eye"></i> ${i18n.detailData}
                                     </button>
                                     <button class="btn btn-confirm btn-sm px-3 rounded-pill" onclick="confirmPPDB(${m.id})">
-                                        <i class="bi bi-check-circle"></i> Konfirmasi
+                                        <i class="bi bi-check-circle"></i> ${i18n.confirmBtn}
                                     </button>
                                 </div>
                             </div>
@@ -198,7 +229,7 @@
     // --- 4. FUNGSI MODAL DETAIL LENGKAP ---
     function viewDetail(id) {
         const content = document.getElementById('detail-content');
-        content.innerHTML = '<div class="text-center py-5"><div class="spinner-border text-success"></div><p class="mt-2">Mengambil berkas pendaftar...</p></div>';
+        content.innerHTML = `<div class="text-center py-5"><div class="spinner-border text-success"></div><p class="mt-2">${i18n.loadingRegistrant}</p></div>`;
         
         const myModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalDetail'));
         myModal.show();
@@ -212,37 +243,37 @@
                 content.innerHTML = `
                     <div class="row">
                         <div class="col-md-6 border-end">
-                            <div class="section-title"><i class="bi bi-person-fill"></i> Identitas Murid</div>
+                            <div class="section-title"><i class="bi bi-person-fill"></i> ${i18n.studentIdentity}</div>
                             <table class="table table-sm table-bordered table-detail">
-                                <tr><th>Nama</th><td>${m.nama_lengkap}</td></tr>
-                                <tr><th>NISN / NIK</th><td>${m.nisn} / ${m.nik}</td></tr>
-                                <tr><th>JK</th><td>${m.jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan'}</td></tr>
-                                <tr><th>TTL</th><td>${m.tempat_lahir || '-'}, ${m.tgl_lahir || '-'}</td></tr>
-                                <tr><th>Email / HP</th><td>${m.alamat_email} / ${m.no_hp}</td></tr>
-                                <tr><th>Sekolah Asal</th><td>${m.sekolah_asal || '-'}</td></tr>
-                                <tr><th>Fisik</th><td>${m.tinggi_badan || '-'} cm / ${m.berat_badan || '-'} kg</td></tr>
+                                <tr><th>${i18n.nameLabel}</th><td>${m.nama_lengkap}</td></tr>
+                                <tr><th>${i18n.nisnNik}</th><td>${m.nisn} / ${m.nik}</td></tr>
+                                <tr><th>${i18n.gender}</th><td>${m.jenis_kelamin == 'L' ? i18n.male : i18n.female}</td></tr>
+                                <tr><th>${i18n.birthPlaceDate}</th><td>${m.tempat_lahir || '-'}, ${m.tgl_lahir || '-'}</td></tr>
+                                <tr><th>${i18n.emailPhone}</th><td>${m.alamat_email} / ${m.no_hp}</td></tr>
+                                <tr><th>${i18n.originSchool}</th><td>${m.sekolah_asal || '-'}</td></tr>
+                                <tr><th>${i18n.physical}</th><td>${m.tinggi_badan || '-'} cm / ${m.berat_badan || '-'} kg</td></tr>
                             </table>
 
-                            <div class="section-title"><i class="bi bi-geo-alt-fill"></i> Alamat Domisili</div>
+                            <div class="section-title"><i class="bi bi-geo-alt-fill"></i> ${i18n.domicileAddress}</div>
                             <table class="table table-sm table-bordered table-detail">
-                                <tr><th>Wilayah</th><td>${m.desa_kelurahan || '-'}, ${m.kota_kabupaten || '-'}</td></tr>
-                                <tr><th>Alamat</th><td>${m.alamat_detail || '-'} (RT/RW: ${m.rt_rw || '-'})</td></tr>
+                                <tr><th>${i18n.region}</th><td>${m.desa_kelurahan || '-'}, ${m.kota_kabupaten || '-'}</td></tr>
+                                <tr><th>${i18n.addressDetail}</th><td>${m.alamat_detail || '-'} (RT/RW: ${m.rt_rw || '-'})</td></tr>
                             </table>
                         </div>
 
                         <div class="col-md-6 ps-md-4">
-                            <div class="section-title text-primary"><i class="bi bi-gender-male"></i> Data Ayah</div>
+                            <div class="section-title text-primary"><i class="bi bi-gender-male"></i> ${i18n.fatherData}</div>
                             <table class="table table-sm table-bordered table-detail mb-3">
-                                <tr><th>Nama</th><td>${w.nama_ayah || '-'}</td></tr>
-                                <tr><th>Pekerjaan</th><td>${w.pekerjaan_ayah || '-'}</td></tr>
-                                <tr><th>Penghasilan</th><td>Rp ${new Number(w.penghasilan_ayah).toLocaleString('id-ID')}</td></tr>
+                                <tr><th>${i18n.nameLabel}</th><td>${w.nama_ayah || '-'}</td></tr>
+                                <tr><th>${i18n.occupation}</th><td>${w.pekerjaan_ayah || '-'}</td></tr>
+                                <tr><th>${i18n.income}</th><td>Rp ${new Number(w.penghasilan_ayah).toLocaleString('id-ID')}</td></tr>
                             </table>
 
-                            <div class="section-title text-danger"><i class="bi bi-gender-female"></i> Data Ibu</div>
+                            <div class="section-title text-danger"><i class="bi bi-gender-female"></i> ${i18n.motherData}</div>
                             <table class="table table-sm table-bordered table-detail mb-3">
-                                <tr><th>Nama</th><td>${w.nama_ibu || '-'}</td></tr>
-                                <tr><th>Pekerjaan</th><td>${w.pekerjaan_ibu || '-'}</td></tr>
-                                <tr><th>Penghasilan</th><td>Rp ${new Number(w.penghasilan_ibu).toLocaleString('id-ID')}</td></tr>
+                                <tr><th>${i18n.nameLabel}</th><td>${w.nama_ibu || '-'}</td></tr>
+                                <tr><th>${i18n.occupation}</th><td>${w.pekerjaan_ibu || '-'}</td></tr>
+                                <tr><th>${i18n.income}</th><td>Rp ${new Number(w.penghasilan_ibu).toLocaleString('id-ID')}</td></tr>
                             </table>
                         </div>
                     </div>`;
@@ -251,7 +282,7 @@
 
     // --- 5. FUNGSI KONFIRMASI (UBAH PENDING KE KONFIRMASI) ---
     function confirmPPDB(id) {
-        if (!confirm('Penting: Data yang dikonfirmasi akan masuk ke database siswa aktif. Lanjutkan?')) return;
+        if (!confirm(i18n.confirmImportant)) return;
 
         fetch(`{{ url('admin/ppdb-notifications/confirm') }}/${id}`, {
             method: 'POST',

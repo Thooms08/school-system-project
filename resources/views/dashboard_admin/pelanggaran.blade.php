@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelola Pelanggaran Murid</title>
+    <title>{{ __('dashboard.violation_system') }}</title>
     @if(isset($sekolah->logo))
     <link rel="icon" type="image/png" href="{{ asset($sekolah->logo) }}">
     @else
@@ -32,10 +32,10 @@
 
     <div id="content">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4 class="fw-bold text-success"><i class="bi bi-exclamation-triangle-fill me-2"></i>Sistem Pelanggaran Murid</h4>
+            <h4 class="fw-bold text-success"><i class="bi bi-exclamation-triangle-fill me-2"></i>{{ __('dashboard.violation_system') }}</h4>
             <div class="gap-2 d-flex">
                 <button class="btn btn-success fw-bold px-4 rounded-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#modalDaftarAturan">
-                    <i class="bi bi-journal-text me-2"></i>Peraturan Pelanggaran
+                    <i class="bi bi-journal-text me-2"></i>{{ __('dashboard.violation_rules') }}
                 </button>
             </div>
         </div>
@@ -56,10 +56,10 @@
 
        <div class="card p-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h5 class="fw-bold m-0 text-dark">Riwayat Pelanggaran Terkini</h5>
+        <h5 class="fw-bold m-0 text-dark">{{ __('dashboard.recent_violations') }}</h5>
         <div class="input-group" style="max-width: 300px;">
             <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search"></i></span>
-            <input type="text" id="ajaxSearchRiwayat" class="form-control border-start-0 ps-0" placeholder="Cari Murid atau Pelanggaran...">
+            <input type="text" id="ajaxSearchRiwayat" class="form-control border-start-0 ps-0" placeholder="{{ __('dashboard.search_violation') }}">
         </div>
     </div>
     <div class="table-responsive">
@@ -67,11 +67,11 @@
             <thead>
                 <tr>
                     <th>NISN</th>
-                    <th>Nama Murid</th>
-                    <th>Pelanggaran</th>
-                    <th>Keterangan</th>
-                    <th class="text-center">Skor</th>
-                    <th class="text-center">Aksi</th>
+                    <th>{{ __('dashboard.student_name_col') }}</th>
+                    <th>{{ __('dashboard.violation_col') }}</th>
+                    <th>{{ __('dashboard.notes_col') }}</th>
+                    <th class="text-center">{{ __('dashboard.score_col') }}</th>
+                    <th class="text-center">{{ __('general.action') }}</th>
                 </tr>
             </thead>
             <tbody id="pelanggaranTableBody">
@@ -94,7 +94,7 @@
                     <td class="text-center">
                         <form action="{{ route('pelanggaran.destroy', $p->id) }}" method="POST">
                             @csrf @method('DELETE')
-                            <button class="btn btn-sm text-danger" onclick="return confirm('Hapus catatan ini?')"><i class="bi bi-trash"></i></button>
+                            <button class="btn btn-sm text-danger" onclick="return confirm(@json(__('dashboard.confirm_delete_violation')))"><i class="bi bi-trash"></i></button>
                         </form>
                     </td>
                 </tr>
@@ -106,7 +106,7 @@
     @if(count($pelanggaranMurid) > 5)
     <div class="text-center mt-3">
         <button id="btnToggleRows" class="btn btn-sm btn-outline-success rounded-pill px-4 fw-bold">
-            <i class="bi bi-chevron-down me-1"></i> Lihat Semua
+            <i class="bi bi-chevron-down me-1"></i> {{ __('dashboard.view_all_btn') }}
         </button>
     </div>
     @endif
@@ -114,17 +114,17 @@
 
         <div class="card p-4 mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h5 class="fw-bold m-0 text-danger"><i class="bi bi-bar-chart-fill me-2"></i>Grafik Akumulasi Skor Murid</h5>
-        <div class="small text-muted">Data berdasarkan skor kumulatif setiap murid</div>
+        <h5 class="fw-bold m-0 text-danger"><i class="bi bi-bar-chart-fill me-2"></i>{{ __('dashboard.score_chart_title') }}</h5>
+        <div class="small text-muted">{{ __('dashboard.chart_subtitle') }}</div>
     </div>
     
     <div style="position: relative; height:400px; width:100%">
         <canvas id="skorChart"></canvas>
     </div>
     <div class="d-flex gap-3 justify-content-center mt-4">
-        <div class="small"><span class="badge bg-danger">●</span> SP 3 (>100)</div>
-        <div class="small"><span class="badge bg-warning text-dark">●</span> Peringatan (75-99)</div>
-        <div class="small"><span class="badge bg-info text-dark">●</span> Pembinaan (<75)
+        <div class="small"><span class="badge bg-danger">●</span> {{ __('dashboard.sp3_label') }}</div>
+        <div class="small"><span class="badge bg-warning text-dark">●</span> {{ __('dashboard.warning_label') }}</div>
+        <div class="small"><span class="badge bg-info text-dark">●</span> {{ __('dashboard.coaching_label') }}
     </div>
 </div>
     </div>
@@ -134,19 +134,19 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content border-0 shadow">
             <div class="modal-header bg-success text-white">
-                <h5 class="modal-title fw-bold"><i class="bi bi-list-check me-2"></i>Daftar Peraturan & Skor</h5>
+                <h5 class="modal-title fw-bold"><i class="bi bi-list-check me-2"></i>{{ __('dashboard.violation_rules_title') }}</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
                 <form action="{{ route('pelanggaran.storeAturan') }}" method="POST" class="row g-3 mb-4 p-3 bg-light rounded-3 border">
                     @csrf
                     <div class="col-md-7">
-                        <label class="form-label small fw-bold">Nama Pelanggaran Baru</label>
-                        <input type="text" name="nama_pelanggaran" class="form-control" placeholder="Contoh: Terlambat" required>
+                        <label class="form-label small fw-bold">{{ __('dashboard.add_new_rule') }}</label>
+                        <input type="text" name="nama_pelanggaran" class="form-control" placeholder="{{ __('dashboard.rule_placeholder') }}" required>
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label small fw-bold">Skor</label>
-                        <input type="number" name="skor" class="form-control" placeholder="Poin" required>
+                        <label class="form-label small fw-bold">{{ __('dashboard.score_label') }}</label>
+                        <input type="number" name="skor" class="form-control" placeholder="{{ __('dashboard.score_placeholder') }}" required>
                     </div>
                     <div class="col-md-2 d-flex align-items-end">
                         <button type="submit" class="btn btn-success w-100"><i class="bi bi-save"></i></button>
@@ -157,9 +157,9 @@
                     <table class="table table-sm table-bordered align-middle">
                         <thead class="table-light">
                             <tr>
-                                <th>Nama Pelanggaran</th>
-                                <th width="100" class="text-center">Skor</th>
-                                <th width="120" class="text-center">Aksi</th>
+                                <th>{{ __('dashboard.violation_name_col') }}</th>
+                                <th width="100" class="text-center">{{ __('dashboard.score_col2') }}</th>
+                                <th width="120" class="text-center">{{ __('general.action') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -171,7 +171,7 @@
                                     <button class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#modalEditAturan{{ $at->id }}"><i class="bi bi-pencil"></i></button>
                                     <form action="{{ route('pelanggaran.destroyAturan', $at->id) }}" method="POST" class="d-inline">
                                         @csrf @method('DELETE')
-                                        <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus aturan ini?')"><i class="bi bi-trash"></i></button>
+                                        <button class="btn btn-sm btn-outline-danger" onclick="return confirm(@json(__('dashboard.confirm_delete_rule')))"><i class="bi bi-trash"></i></button>
                                     </form>
                                 </td>
                             </tr>
@@ -190,21 +190,21 @@
         <form action="{{ route('pelanggaran.updateAturan', $at->id) }}" method="POST" class="modal-content shadow-lg">
             @csrf @method('PUT')
             <div class="modal-header">
-                <h6 class="modal-title fw-bold">Edit Aturan</h6>
+                <h6 class="modal-title fw-bold">{{ __('dashboard.edit_rule') }}</h6>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <div class="mb-3">
-                    <label class="small fw-bold">Nama Pelanggaran</label>
+                    <label class="small fw-bold">{{ __('dashboard.violation_name_label') }}</label>
                     <input type="text" name="nama_pelanggaran" class="form-control" value="{{ $at->nama_pelanggaran }}" required>
                 </div>
                 <div class="mb-3">
-                    <label class="small fw-bold">Skor</label>
+                    <label class="small fw-bold">{{ __('dashboard.score_label') }}</label>
                     <input type="number" name="skor" class="form-control" value="{{ $at->skor }}" required>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-success w-100">Update</button>
+                <button type="submit" class="btn btn-success w-100">{{ __('general.update') }}</button>
             </div>
         </form>
     </div>
@@ -243,11 +243,11 @@
         if (isHidden) {
             // Tampilkan semua
             extraRows.forEach(row => row.classList.remove('d-none'));
-            this.innerHTML = '<i class="bi bi-chevron-up me-1"></i> Sembunyikan';
+            this.innerHTML = '<i class="bi bi-chevron-up me-1"></i> ' + @json(__('dashboard.hide_btn'));
         } else {
             // Sembunyikan kembali
             extraRows.forEach(row => row.classList.add('d-none'));
-            this.innerHTML = '<i class="bi bi-chevron-down me-1"></i> Lihat Semua';
+            this.innerHTML = '<i class="bi bi-chevron-down me-1"></i> ' + @json(__('dashboard.view_all_btn'));
         }
     });
     const dataSkor = @json($akumulasiSkor);
@@ -272,7 +272,7 @@
         data: {
             labels: labels,
             datasets: [{
-                label: 'Total Skor Pelanggaran',
+                label: @json(__('dashboard.chart_total_violation_score')),
                 data: scores,
                 backgroundColor: backgroundColors,
                 borderColor: borderColors,
@@ -289,13 +289,13 @@
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: 'Poin Pelanggaran'
+                        text: @json(__('dashboard.chart_violation_points_axis'))
                     }
                 },
                 x: {
                     title: {
                         display: true,
-                        text: 'Nama Murid'
+                        text: @json(__('dashboard.chart_student_name_axis'))
                     }
                 }
             },
@@ -310,7 +310,7 @@
                             if (label) {
                                 label += ': ';
                             }
-                            label += context.parsed.y + ' Poin';
+                            label += context.parsed.y + ' ' + @json(__('general.points'));
                             return label;
                         }
                     }

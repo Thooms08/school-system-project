@@ -11,6 +11,9 @@ use App\Http\Controllers\PPDBController;
 use App\Http\Controllers\WaliDashboardController;
 
 
+// Language Switcher (accessible to all, no auth required)
+Route::post('/lang/switch', [App\Http\Controllers\SettingLangController::class, 'switch'])->name('lang.switch');
+
 Route::get('/', [IndexController::class, 'index'])->name('home');
 Route::get('/artikel/{id}', [IndexController::class, 'showArtikel'])->name('artikel.show');
 Route::get('/login', [AuthController::class, 'index'])->name('login');
@@ -153,4 +156,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/informasi', [App\Http\Controllers\InformasiController::class, 'index'])->name('informasi.index');
     Route::resource('profile-sekolah', ProfileSekolahController::class);
+
+    // Language Settings (Admin only)
+    Route::get('/setting-lang', [App\Http\Controllers\SettingLangController::class, 'index'])->name('setting.lang');
 });

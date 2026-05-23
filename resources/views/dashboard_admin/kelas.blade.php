@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelola Kelas</title>
+    <title>{{ __('dashboard.class_management') }}</title>
     @if(isset($sekolah->logo))
     <link rel="icon" type="image/png" href="{{ asset($sekolah->logo) }}">
     @else
@@ -117,12 +117,12 @@
                             <i class="bi bi-list fs-4"></i>
                         </button>
                         <div class="ms-3">
-                            <h4 class="mb-0 fw-bold text-success">Manajemen Kelas</h4>
-                            <p class="text-muted small mb-0">Klik pada kelas untuk mengelola murid</p>
+                            <h4 class="mb-0 fw-bold text-success">{{ __('dashboard.class_management') }}</h4>
+                            <p class="text-muted small mb-0">{{ __('dashboard.class_subtitle') }}</p>
                         </div>
                     </div>
                     <button class="btn btn-success px-4 shadow-sm fw-bold" data-bs-toggle="modal" data-bs-target="#modalTambahKelas">
-                        <i class="bi bi-plus-lg me-2"></i>Tambah Kelas
+                        <i class="bi bi-plus-lg me-2"></i>{{ __('dashboard.add_class') }}
                     </button>
                 </div>
 
@@ -144,19 +144,19 @@
                                     </div>
                                     <h5 class="fw-bold mb-1">{{ $k->nama_kelas }}</h5>
                                     <p class="text-muted small mb-0">
-                                        <i class="bi bi-people me-1"></i> {{ $k->murid_count }} Murid Terdaftar
+                                        <i class="bi bi-people me-1"></i> {{ __('dashboard.students_enrolled', ['count' => $k->murid_count]) }}
                                     </p>
                                 </div>
                             </a>
                             <div class="card-footer bg-white border-0 pb-3 text-center">
                                 <button class="btn btn-sm btn-outline-success border-0" 
                                     onclick="openEditModal('{{ $k->id }}', '{{ $k->nama_kelas }}')">
-                                    <i class="bi bi-pencil-square"></i> Edit Kelas
+                                    <i class="bi bi-pencil-square"></i> {{ __('dashboard.edit_class') }}
                                 </button>
-                                <form action="{{ route('kelas.destroy', $k->id) }}" method="POST" onsubmit="return confirm('Hapus kelas ini? Semua data murid di dalamnya akan terlepas.')">
+                                <form action="{{ route('kelas.destroy', $k->id) }}" method="POST" onsubmit="return confirm('{{ __('dashboard.confirm_delete_class') }}')">
                                     @csrf @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-outline-danger fw-semibold border-0">
-                                        <i class="bi bi-trash me-1"></i> Hapus Kelas
+                                        <i class="bi bi-trash me-1"></i> {{ __('general.delete') }}
                                     </button>
                                 </form>
                             </div>
@@ -165,7 +165,7 @@
                     @empty
                     <div class="col-12 text-center py-5">
                         <div class="display-1 text-muted opacity-25 mb-3"><i class="bi bi-folder-x"></i></div>
-                        <h5 class="text-muted">Belum ada data kelas.</h5>
+                        <h5 class="text-muted">{{ __('dashboard.no_classes') }}</h5>
                     </div>
                     @endforelse
                 </div>
@@ -180,19 +180,19 @@
                 <form action="{{ route('kelas.store') }}" method="POST">
                     @csrf
                     <div class="modal-header bg-success text-white">
-                        <h5 class="modal-title fw-bold">Buat Kelas Baru</h5>
+                        <h5 class="modal-title fw-bold">{{ __('dashboard.create_new_class') }}</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body p-4">
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Nama Kelas</label>
-                            <input type="text" name="nama_kelas" class="form-control form-control-lg" placeholder="Contoh: 7B" required>
-                            <small class="text-muted">Pastikan nama kelas belum digunakan.</small>
+                            <label class="form-label fw-bold">{{ __('dashboard.class_name') }}</label>
+                            <input type="text" name="nama_kelas" class="form-control form-control-lg" placeholder="{{ __('dashboard.class_name_placeholder') }}" required>
+                            <small class="text-muted">{{ __('dashboard.class_name_note') }}</small>
                         </div>
                     </div>
                     <div class="modal-footer border-0">
-                        <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-success px-4">Simpan Kelas</button>
+                        <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">{{ __('general.cancel') }}</button>
+                        <button type="submit" class="btn btn-success px-4">{{ __('dashboard.save_class') }}</button>
                     </div>
                 </form>
             </div>
@@ -204,15 +204,15 @@
                 <form id="formEditKelas" method="POST">
                     @csrf @method('PUT')
                     <div class="modal-header bg-success text-white">
-                        <h5 class="modal-title fw-bold">Edit Nama Kelas</h5>
+                        <h5 class="modal-title fw-bold">{{ __('dashboard.edit_class_name') }}</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body p-4">
-                        <label class="form-label fw-bold">Nama Kelas Baru</label>
+                        <label class="form-label fw-bold">{{ __('dashboard.new_class_name') }}</label>
                         <input type="text" name="nama_kelas" id="edit_nama_kelas" class="form-control" required>
                     </div>
                     <div class="modal-footer border-0">
-                        <button type="submit" class="btn btn-success px-4">Perbarui Nama</button>
+                        <button type="submit" class="btn btn-success px-4">{{ __('dashboard.update_name') }}</button>
                     </div>
                 </form>
             </div>

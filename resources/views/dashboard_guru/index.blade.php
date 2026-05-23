@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Guru</title>
+    <title>{{ __('dashboard.teacher_dashboard') }}</title>
     @if(isset($sekolah->logo))
     <link rel="icon" type="image/png" href="{{ asset($sekolah->logo) }}">
     @else
@@ -85,22 +85,22 @@
                 <button type="button" id="sidebarCollapse" class="btn">
                     <i class="bi bi-list fs-4"></i>
                 </button>
-                <h5 class="ms-3 mb-0 fw-bold">Dashboard Guru</h5>
+                <h5 class="ms-3 mb-0 fw-bold">{{ __('dashboard.teacher_dashboard') }}</h5>
             </div>
 
             <!-- Welcome -->
             <div class="card welcome-card p-4 mb-4">
                 <div class="row align-items-center">
                     <div class="col-md-8">
-                        <h2 class="fw-bold mb-2">Selamat Datang, Guru</h2>
+                        <h2 class="fw-bold mb-2">{{ __('dashboard.teacher_welcome') }}</h2>
                         <p class="mb-0 opacity-75">
-                            Anda dapat mencatat absensi murid, pelanggaran, serta keaktifan siswa secara real-time.
+                            {{ __('dashboard.teacher_subtitle') }}
                         </p>
                     </div>
                     <div class="col-md-4 text-md-end mt-3 mt-md-0">
                         <div class="clock-box">
                             <i class="bi bi-clock-fill me-2"></i>
-                            <span id="realtime-clock">Memuat...</span>
+                            <span id="realtime-clock">{{ __('general.loading') }}</span>
                         </div>
                     </div>
                 </div>

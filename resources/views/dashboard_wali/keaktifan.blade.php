@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wali Murid | Keaktifan Murid</title>
+    <title>{{ __('dashboard.student_activeness_title') }}</title>
      @if(isset($sekolah->logo))
     <link rel="icon" type="image/png" href="{{ asset($sekolah->logo) }}">
     @else
@@ -38,20 +38,20 @@
 <div class="container py-4">
     <div class="d-flex align-items-center justify-content-between mb-4">
         <a href="{{ route('wali.home') }}" class="btn btn-outline-primary rounded-pill px-4">
-            <i class="bi bi-arrow-left me-2"></i> Kembali
+            <i class="bi bi-arrow-left me-2"></i> {{ __('dashboard.back_btn_wali') }}
         </a>
-        <h4 class="fw-bold mb-0 text-primary">Monitoring Keaktifan</h4>
+        <h4 class="fw-bold mb-0 text-primary">{{ __('dashboard.activeness_monitoring') }}</h4>
     </div>
 
     <div class="row g-4">
         <div class="col-lg-4">
             <div class="card p-4 mb-4">
-                <h6 class="fw-bold mb-3"><i class="bi bi-funnel-fill me-2"></i>Filter Tanggal</h6>
+                <h6 class="fw-bold mb-3"><i class="bi bi-funnel-fill me-2"></i>{{ __('dashboard.date_filter') }}</h6>
                 <input type="date" id="filterTanggal" class="form-control mb-4" value="{{ date('Y-m-d') }}" onchange="loadKeaktifan()">
                 
                 <hr>
                 
-                <h6 class="fw-bold mb-3 text-center">Statistik Harian</h6>
+                <h6 class="fw-bold mb-3 text-center">{{ __('dashboard.daily_stats') }}</h6>
                 <div style="height: 250px;">
                     <canvas id="keaktifanChart"></canvas>
                 </div>
@@ -65,17 +65,17 @@
                         <h5 class="fw-bold mb-0" id="namaAnanda">-</h5>
                         <small class="text-muted" id="kelasAnanda">-</small>
                     </div>
-                    <span class="badge bg-primary rounded-pill px-3">Live Data</span>
+                    <span class="badge bg-primary rounded-pill px-3">{{ __('general.live_data') }}</span>
                 </div>
 
                 <div class="table-responsive desktop-view">
                     <table class="table align-middle">
                         <thead class="table-light">
                             <tr>
-                                <th>Kegiatan</th>
-                                <th class="text-center">Status</th>
-                                <th>Foto</th>
-                                <th>Keterangan</th>
+                                <th>{{ __('dashboard.activity_col3') }}</th>
+                                <th class="text-center">{{ __('dashboard.status_col2') }}</th>
+                                <th>{{ __('dashboard.photo_col') }}</th>
+                                <th>{{ __('dashboard.notes_col2') }}</th>
                             </tr>
                         </thead>
                         <tbody id="tableBody"></tbody>
@@ -92,7 +92,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0">
             <div class="modal-header">
-                <h5 class="modal-title">Dokumentasi Kegiatan</h5>
+                <h5 class="modal-title">{{ __('dashboard.activity_documentation') }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-0 text-center">
@@ -105,6 +105,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+    const i18nWaliKea = {
+        noActivenessToday: @json(__('dashboard.no_activeness_today')),
+    };
     let myChart;
 
     function initChart(chartData) {
@@ -134,7 +137,7 @@
             .then(res => res.json())
             .then(res => {
                 document.getElementById('namaAnanda').innerText = res.murid.nama_lengkap;
-                document.getElementById('kelasAnanda').innerText = "Kelas: " + (res.murid.nama_kelas || '-');
+                document.getElementById('kelasAnanda').innerText = @json(__('dashboard.class_prefix')) + (res.murid.nama_kelas || '-');
                 
                 initChart(res.chart);
 
@@ -142,13 +145,13 @@
                 let mHtml = '';
 
                 if(res.keaktifan.length === 0) {
-                    const emptyMsg = `<div class="text-center py-5 text-muted"><i class="bi bi-inbox fs-1 d-block mb-2"></i>Belum ada data keaktifan pada tanggal ini.</div>`;
+                    const emptyMsg = `<div class="text-center py-5 text-muted"><i class="bi bi-inbox fs-1 d-block mb-2"></i>${i18nWaliKea.noActivenessToday}</div>`;
                     tableBody.innerHTML = `<tr><td colspan="4">${emptyMsg}</td></tr>`;
                     mobileBody.innerHTML = emptyMsg;
                 } else {
                     res.keaktifan.forEach(k => {
                         const statusIcon = k.is_active == 1 ? '<i class="bi bi-check-circle-fill text-primary fs-5"></i>' : '<i class="bi bi-x-circle-fill text-danger fs-5"></i>';
-                        const statusText = k.is_active == 1 ? 'Aktif' : 'Tidak Aktif';
+                        const statusText = k.is_active == 1 ? @json(__('dashboard.active_status')) : @json(__('dashboard.inactive_status'));
                         const badgeClass = k.is_active == 1 ? 'bg-primary-subtle text-primary' : 'bg-danger-subtle text-danger';
                         const fotoPath = k.foto ? `/${k.foto}` : 'https://placehold.co/100x100?text=No+Photo';
 
@@ -180,7 +183,7 @@
             })
             .catch(err => {
                 console.error(err);
-                tableBody.innerHTML = '<tr><td colspan="4" class="text-center text-danger">Gagal memuat data.</td></tr>';
+                tableBody.innerHTML = `<tr><td colspan="4" class="text-center text-danger">{{ __('dashboard.failed_load_activeness') }}</td></tr>`;
             });
     }
 

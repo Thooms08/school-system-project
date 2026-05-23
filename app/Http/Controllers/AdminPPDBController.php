@@ -53,7 +53,7 @@ class AdminPPDBController extends Controller
             ]);
 
         if ($update) {
-            return response()->json(['success' => true, 'message' => 'Pendaftaran berhasil dikonfirmasi']);
+            return response()->json(['success' => true, 'message' => __('messages.registration_confirmed')]);
         }
 
         return response()->json(['success' => false], 500);
@@ -74,7 +74,7 @@ public function toggleStatus() {
     return response()->json([
         'success' => true, 
         'isOpen' => $newStatus,
-        'message' => $newStatus ? 'Pendaftaran PPDB Berhasil Dibuka' : 'Pendaftaran PPDB Berhasil Ditutup'
+        'message' => $newStatus ? __('messages.ppdb_opened') : __('messages.ppdb_closed')
     ]);
 }
 }

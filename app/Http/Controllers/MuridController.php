@@ -55,7 +55,7 @@ class MuridController extends Controller
             ));
         });
 
-        return redirect()->route('murid.index')->with('success', 'Murid Baru Berhasil Ditambahkan');
+        return redirect()->route('murid.index')->with('success', __('messages.student_added'));
     }
 
     public function show($id)
@@ -105,7 +105,7 @@ public function update(Request $request, $id)
         ]));
     });
 
-    return redirect()->route('murid.index')->with('success', 'Data Murid Berhasil Diperbarui');
+    return redirect()->route('murid.index')->with('success', __('messages.student_updated'));
 }
 public function downloadPDF($id)
     {
@@ -166,7 +166,7 @@ public function downloadPDF($id)
                 </tr>';
             }
         } else {
-            $output = '<tr><td colspan="4" class="text-center py-4 text-muted">Data tidak ditemukan</td></tr>';
+            $output = '<tr><td colspan="4" class="text-center py-4 text-muted">' . e(__('messages.table_no_results')) . '</td></tr>';
         }
         return response($output);
     }

@@ -45,7 +45,7 @@ class InformasiController extends Controller
         }
 
         Dokumentasi::create($data);
-        return redirect()->back()->with('success', 'Kegiatan berhasil disimpan');
+        return redirect()->back()->with('success', __('messages.activity_saved'));
     }
 
     public function destroyKegiatan($id)
@@ -53,7 +53,7 @@ class InformasiController extends Controller
         $data = Dokumentasi::findOrFail($id);
         if (File::exists(public_path($data->foto_kegiatan))) File::delete(public_path($data->foto_kegiatan));
         $data->delete();
-        return redirect()->back()->with('success', 'Kegiatan dihapus');
+        return redirect()->back()->with('success', __('messages.activity_deleted'));
     }
 
     // --- PROGRAM SEKOLAH ---
@@ -65,13 +65,13 @@ class InformasiController extends Controller
         ]);
 
         ProgramSekolah::create($request->all());
-        return redirect()->back()->with('success', 'Program berhasil disimpan');
+        return redirect()->back()->with('success', __('messages.program_saved'));
     }
 
     public function destroyProgram($id)
     {
         ProgramSekolah::destroy($id);
-        return redirect()->back()->with('success', 'Program dihapus');
+        return redirect()->back()->with('success', __('messages.program_deleted'));
     }
 
     // --- PRESTASI ---
@@ -106,7 +106,7 @@ public function storePrestasi(Request $request)
         }
     }
 
-    return redirect()->back()->with('success', 'Prestasi dan Foto berhasil disimpan');
+    return redirect()->back()->with('success', __('messages.achievement_saved'));
 }
     // --- ARTIKEL ---
     public function storeArtikel(Request $request)
@@ -138,7 +138,7 @@ public function storePrestasi(Request $request)
         }
     });
 
-    return redirect()->back()->with('success', 'Artikel berhasil disimpan');
+    return redirect()->back()->with('success', __('messages.article_saved'));
 }
     public function destroyArtikel($id)
     {
@@ -147,7 +147,7 @@ public function storePrestasi(Request $request)
             if (File::exists(public_path($f->foto_artikel))) File::delete(public_path($f->foto_artikel));
         }
         $artikel->delete();
-        return redirect()->back()->with('success', 'Artikel dihapus');
+        return redirect()->back()->with('success', __('messages.article_deleted'));
     }
     // --- UPDATE KEGIATAN ---
 public function updateKegiatan(Request $request, $id) {
@@ -162,14 +162,14 @@ public function updateKegiatan(Request $request, $id) {
         $updateData['foto_kegiatan'] = 'assets/kegiatan/' . $fileName;
     }
     $data->update($updateData);
-    return redirect()->back()->with('success', 'Kegiatan berhasil diperbarui');
+    return redirect()->back()->with('success', __('messages.activity_updated'));
 }
 
 // --- UPDATE PROGRAM ---
 public function updateProgram(Request $request, $id) {
     $program = ProgramSekolah::findOrFail($id);
     $program->update($request->all());
-    return redirect()->back()->with('success', 'Program berhasil diperbarui');
+    return redirect()->back()->with('success', __('messages.program_updated'));
 }
 
 // --- UPDATE PRESTASI ---
@@ -201,7 +201,7 @@ public function updatePrestasi(Request $request, $id)
         }
     }
 
-    return redirect()->back()->with('success', 'Data prestasi berhasil diperbarui');
+    return redirect()->back()->with('success', __('messages.achievement_updated'));
 }
 
 // Hapus satu foto tertentu di dalam modal edit
@@ -216,7 +216,7 @@ public function destroyFotoPrestasi($id)
 
     $foto->delete();
 
-    return response()->json(['success' => 'Foto berhasil dihapus']);
+    return response()->json(['success' => __('messages.photo_deleted')]);
 }
 
 // Update Artikel
@@ -240,7 +240,7 @@ public function updateArtikel(Request $request, $id) {
             ]);
         }
     }
-    return redirect()->back()->with('success', 'Artikel diperbarui');
+    return redirect()->back()->with('success', __('messages.article_updated'));
 }
 
 // Hapus satu foto artikel dari server & DB

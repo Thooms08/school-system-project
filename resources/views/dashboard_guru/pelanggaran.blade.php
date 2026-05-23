@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Guru</title>
+    <title>{{ __('dashboard.violation_recording') }}</title>
     @if(isset($sekolah->logo))
     <link rel="icon" type="image/png" href="{{ asset($sekolah->logo) }}">
     @else
@@ -104,8 +104,8 @@
                     <i class="bi bi-list fs-4"></i>
                 </button>
                 <div class="ms-3">
-                    <h4 class="mb-0 fw-bold text-dark">Pencatatan Pelanggaran</h4>
-                    <p class="text-muted small mb-0">Kelola kedisiplinan murid secara real-time</p>
+                    <h4 class="mb-0 fw-bold text-dark">{{ __('dashboard.violation_recording') }}</h4>
+                    <p class="text-muted small mb-0">{{ __('dashboard.violation_subtitle') }}</p>
                 </div>
             </div>
 
@@ -123,9 +123,9 @@
                             <i class="bi bi-door-open-fill fs-1"></i>
                         </div>
                         <div class="col-md-11">
-                            <label class="form-label text-success fw-bold">Pilih Kelas Murid</label>
+                            <label class="form-label text-success fw-bold">{{ __('dashboard.select_student_class') }}</label>
                             <select class="form-select border-success shadow-none" id="kelasSelect">
-                                <option value="">-- Pilih Kelas --</option>
+                                <option value="">{{ __('dashboard.select_class_option') }}</option>
                                 @foreach($kelas as $k)
                                     <option value="{{ $k->id }}">{{ $k->nama_kelas }}</option>
                                 @endforeach
@@ -142,8 +142,8 @@
                             <i class="bi bi-exclamation-octagon-fill text-danger fs-3"></i>
                         </div>
                         <div>
-                            <h5 class="fw-bold mb-0 text-danger">Form Input Pelanggaran</h5>
-                            <small class="text-muted">Pastikan data yang dimasukkan sudah sesuai dengan kejadian</small>
+                            <h5 class="fw-bold mb-0 text-danger">{{ __('dashboard.violation_form_title') }}</h5>
+                            <small class="text-muted">{{ __('dashboard.violation_form_subtitle') }}</small>
                         </div>
                     </div>
 
@@ -151,7 +151,7 @@
                         @csrf
                         <div class="row g-4 mb-4">
                             <div class="col-md-4">
-                                <label class="form-label">Tanggal Laporan</label>
+                                <label class="form-label">{{ __('dashboard.report_date') }}</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light border-end-0"><i class="bi bi-calendar-event"></i></span>
                                     <input type="text" class="form-control bg-light border-start-0" id="tanggalDisplay" readonly>
@@ -159,34 +159,34 @@
                             </div>
                             
                             <div class="col-md-4">
-                                <label class="form-label">Pilih Murid</label>
+                                <label class="form-label">{{ __('dashboard.select_student') }}</label>
                                 <select name="id_murid" id="muridSelect" class="form-select" required>
-                                    <option value="">-- Memuat Data Murid... --</option>
+                                    <option value="">{{ __('dashboard.loading_students') }}</option>
                                 </select>
                             </div>
 
                             <div class="col-md-4">
-                                <label class="form-label">Jenis Pelanggaran</label>
+                                <label class="form-label">{{ __('dashboard.violation_type') }}</label>
                                 <select name="id_aturan_pelanggaran" class="form-select" required>
-                                    <option value="">-- Pilih Peraturan --</option>
+                                    <option value="">{{ __('dashboard.select_rule') }}</option>
                                     @foreach($aturans as $at)
-                                        <option value="{{ $at->id }}">{{ $at->nama_pelanggaran }} ({{ $at->skor }} Poin)</option>
+                                        <option value="{{ $at->id }}">{{ $at->nama_pelanggaran }} ({{ $at->skor }} {{ __('general.points') }})</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
 
                         <div class="mb-4">
-                            <label class="form-label">Keterangan Tambahan / Kronologi</label>
-                            <textarea name="keterangan" class="form-control" rows="4" placeholder="Jelaskan secara singkat kronologi atau detail pelanggaran..."></textarea>
+                            <label class="form-label">{{ __('dashboard.additional_notes') }}</label>
+                            <textarea name="keterangan" class="form-control" rows="4" placeholder="{{ __('dashboard.notes_placeholder') }}"></textarea>
                         </div>
 
                         <hr class="my-4 opacity-50">
 
                         <div class="d-flex justify-content-between align-items-center">
-                            <p class="text-muted small mb-0"><i class="bi bi-info-circle me-1"></i> Data yang disimpan akan otomatis terakumulasi dalam skor poin murid.</p>
+                            <p class="text-muted small mb-0"><i class="bi bi-info-circle me-1"></i> {{ __('dashboard.auto_accumulate') }}</p>
                             <button type="submit" class="btn btn-submit text-white shadow">
-                                <i class="bi bi-save2-fill me-2"></i>Simpan Laporan
+                                <i class="bi bi-save2-fill me-2"></i>{{ __('dashboard.save_report') }}
                             </button>
                         </div>
                     </form>
@@ -196,8 +196,8 @@
     <div class="card-header bg-white p-4 border-0">
         <div class="row align-items-center">
             <div class="col-md-6">
-                <h5 class="fw-bold mb-0 text-dark">Daftar Pelanggaran Terkini</h5>
-                <p class="text-muted small mb-0">Riwayat pencatatan kedisiplinan murid</p>
+                <h5 class="fw-bold mb-0 text-dark">{{ __('dashboard.recent_violations_list') }}</h5>
+                <p class="text-muted small mb-0">{{ __('dashboard.violations_subtitle') }}</p>
             </div>
             <div class="col-md-6 mt-3 mt-md-0">
                 <div class="input-group">
@@ -205,7 +205,7 @@
                         <i class="bi bi-search"></i>
                     </span>
                     <input type="text" id="searchViolation" class="form-control bg-light border-start-0 shadow-none" 
-                           placeholder="Cari nama murid, kelas, atau jenis pelanggaran...">
+                           placeholder="{{ __('dashboard.search_violations') }}">
                 </div>
             </div>
         </div>
@@ -215,11 +215,11 @@
         <table class="table table-hover align-middle" id="violationTable">
             <thead class="table-light">
                 <tr>
-                    <th class="py-3 border-0">Nama Murid</th>
-                    <th class="py-3 border-0">Pelanggaran</th>
-                    <th class="py-3 border-0 text-center">Poin</th>
-                    <th class="py-3 border-0 text-center">Status</th>
-                    <th class="py-3 border-0">Tanggal</th>
+                    <th class="py-3 border-0">{{ __('dashboard.student_name_col2') }}</th>
+                    <th class="py-3 border-0">{{ __('dashboard.violation_col2') }}</th>
+                    <th class="py-3 border-0 text-center">{{ __('dashboard.points_col') }}</th>
+                    <th class="py-3 border-0 text-center">{{ __('dashboard.status_col') }}</th>
+                    <th class="py-3 border-0">{{ __('dashboard.date_col') }}</th>
                 </tr>
             </thead>
             <tbody id="violationTableBody">
@@ -229,7 +229,7 @@
                         <small class="text-muted">NISN: {{ $rp->nisn }}</small>
                     </td>
                     <td class="violation-type">
-                        <span class="badge bg-secondary bg-opacity-10 text-secondary mb-1">{{ $rp->nama_kelas ?? 'Tanpa Kelas' }}</span>
+                        <span class="badge bg-secondary bg-opacity-10 text-secondary mb-1">{{ $rp->nama_kelas ?? __('dashboard.no_class_label') }}</span>
                         <div>{{ $rp->nama_pelanggaran }}</div>
                     </td>
                     <td class="text-center">
@@ -237,11 +237,11 @@
                     </td>
                     <td class="text-center">
                         @if($rp->status == 'pending')
-                            <span class="badge bg-warning text-dark px-3 py-2">Pending</span>
+                            <span class="badge bg-warning text-dark px-3 py-2">{{ __('general.pending') }}</span>
                         @elseif($rp->status == 'konfirmasi')
-                            <span class="badge bg-success px-3 py-2">Dikonfirmasi</span>
+                            <span class="badge bg-success px-3 py-2">{{ __('general.confirmed') }}</span>
                         @else
-                            <span class="badge bg-danger px-3 py-2">Ditolak</span>
+                            <span class="badge bg-danger px-3 py-2">{{ __('general.rejected') }}</span>
                         @endif
                     </td>
                     <td>
@@ -250,13 +250,13 @@
                 </tr>
                 @empty
                 <tr id="noDataRow">
-                    <td colspan="5" class="text-center py-5 text-muted">Belum ada data riwayat.</td>
+                    <td colspan="5" class="text-center py-5 text-muted">{{ __('dashboard.no_history') }}</td>
                 </tr>
                 @endforelse
                 <tr id="notFoundRow" style="display: none;">
                     <td colspan="5" class="text-center py-5 text-muted">
                         <i class="bi bi-search fs-1 d-block mb-2"></i>
-                        Data yang Anda cari tidak ditemukan.
+                        {{ __('dashboard.data_not_found_search') }}
                     </td>
                 </tr>
             </tbody>
@@ -272,6 +272,12 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+    const i18nGuruPel = {
+        loadingStudents: @json(__('dashboard.loading_students_msg')),
+        selectStudent: @json(__('dashboard.select_student')),
+        noClassStudents: @json(__('dashboard.no_class_students')),
+        failedLoad: @json(__('dashboard.failed_load')),
+    };
     // 1. AJAX: Ambil Murid per Kelas
     // Ubah bagian ini di dashboard_guru/pelanggaran.blade.php
 
@@ -282,24 +288,24 @@ document.getElementById('kelasSelect').addEventListener('change', function () {
 
     if (classId) {
         formSection.style.display = 'block';
-        muridSelect.innerHTML = '<option value="">Sedang memuat...</option>';
+        muridSelect.innerHTML = '<option value="">' + i18nGuruPel.loadingStudents + '</option>';
 
         // MEMANGGIL ROUTE BARU
         fetch("{{ route('murid.getByKelas') }}?kelas_id=" + classId)
         .then(response => response.json())
         .then(data => {
-                muridSelect.innerHTML = '<option value="">-- Pilih Nama Murid --</option>';
+                muridSelect.innerHTML = '<option value="">' + i18nGuruPel.selectStudent + '</option>';
                 if (data.length > 0) {
                     data.forEach(m => {
                         // Memasukkan data ke dropdown
                         muridSelect.innerHTML += `<option value="${m.id}">${m.nama_lengkap} (${m.nisn})</option>`;
                     });
                 } else {
-                    muridSelect.innerHTML = '<option value="">Tidak ada murid di kelas ini</option>';
+                    muridSelect.innerHTML = '<option value="">' + i18nGuruPel.noClassStudents + '</option>';
                 }
             })
             .catch(error => {
-                muridSelect.innerHTML = '<option value="">Gagal memuat data</option>';
+                muridSelect.innerHTML = '<option value="">' + i18nGuruPel.failedLoad + '</option>';
                 console.error('Error:', error);
             });
     } else {

@@ -43,7 +43,7 @@ class KelasController extends Controller
     {
         $request->validate(['nama_kelas' => 'required|string|max:255']);
         Kelas::create($request->all());
-        return redirect()->route('kelas.index')->with('success', 'Kelas berhasil dibuat!');
+        return redirect()->route('kelas.index')->with('success', __('messages.class_created'));
     }
 
     public function addStudent(Request $request)
@@ -59,19 +59,19 @@ class KelasController extends Controller
             'created_at' => now()
         ]);
 
-        return redirect()->back()->with('success', 'Murid berhasil dimasukkan ke kelas!');
+        return redirect()->back()->with('success', __('messages.student_added_to_class'));
     }
 
     public function removeStudent($id_murid)
     {
         DB::table('murid_kelas')->where('id_murid', $id_murid)->delete();
-        return redirect()->back()->with('success', 'Murid telah dikeluarkan dari kelas.');
+        return redirect()->back()->with('success', __('messages.student_removed_from_class'));
     }
 
     public function destroy($id)
     {
         Kelas::findOrFail($id)->delete();
-        return redirect()->route('kelas.index')->with('success', 'Kelas dihapus.');
+        return redirect()->route('kelas.index')->with('success', __('messages.class_deleted'));
     }
     public function update(Request $request, $id)
 {
@@ -84,6 +84,6 @@ class KelasController extends Controller
         'nama_kelas' => $request->nama_kelas
     ]);
 
-    return redirect()->route('kelas.index')->with('success', 'Nama kelas berhasil diperbarui!');
+    return redirect()->route('kelas.index')->with('success', __('messages.class_name_updated'));
 }
 }

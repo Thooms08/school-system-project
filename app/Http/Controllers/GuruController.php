@@ -25,7 +25,7 @@ class GuruController extends Controller
 
         Guru::create($request->all());
 
-        return redirect()->back()->with('success', 'Data guru berhasil ditambahkan!');
+        return redirect()->back()->with('success', __('messages.teacher_added'));
     }
 
     public function update(Request $request, $id)
@@ -40,13 +40,13 @@ class GuruController extends Controller
         $guru = Guru::findOrFail($id);
         $guru->update($request->all());
 
-        return redirect()->back()->with('success', 'Data guru berhasil diperbarui!');
+        return redirect()->back()->with('success', __('messages.teacher_updated'));
     }
 
     public function destroy($id)
     {
         Guru::findOrFail($id)->delete();
-        return redirect()->back()->with('success', 'Data guru berhasil dihapus!');
+        return redirect()->back()->with('success', __('messages.teacher_deleted'));
     }
     public function search(Request $request)
 {
@@ -86,7 +86,7 @@ class GuruController extends Controller
             </tr>';
         }
     } else {
-        $output = '<tr><td colspan="6" class="text-center py-4 text-muted">Data guru tidak ditemukan</td></tr>';
+        $output = '<tr><td colspan="6" class="text-center py-4 text-muted">' . e(__('messages.table_teachers_not_found')) . '</td></tr>';
     }
 
     return response($output);
@@ -166,7 +166,7 @@ public function searchPelanggaran(Request $request)
             </tr>';
         }
     } else {
-        $output = '<tr><td colspan="5" class="text-center py-5 text-muted">Data tidak ditemukan</td></tr>';
+        $output = '<tr><td colspan="5" class="text-center py-5 text-muted">' . e(__('messages.table_no_results')) . '</td></tr>';
     }
 
     return response($output);

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelola Akun Guru</title>
+    <title>{{ __('dashboard.manage_teacher_accounts') }}</title>
      @if(isset($sekolah->logo))
     <link rel="icon" type="image/png" href="{{ asset($sekolah->logo) }}">
     @else
@@ -89,7 +89,7 @@
                     <button type="button" id="sidebarCollapse" class="btn btn-success me-3">
                         <i class="bi bi-list"></i>
                     </button>
-                    <h4 class="fw-bold text-success mb-0">Kelola Akun Login Guru</h4>
+                    <h4 class="fw-bold text-success mb-0">{{ __('dashboard.manage_teacher_accounts') }}</h4>
                 </div>
             </div>
 
@@ -116,7 +116,7 @@
                             <span class="input-group-text border-end-0">
                                 <i class="bi bi-search text-muted"></i>
                             </span>
-                            <input type="text" id="searchGuru" class="form-control border-start-0 ps-0" placeholder="Cari nama guru atau username...">
+                            <input type="text" id="searchGuru" class="form-control border-start-0 ps-0" placeholder="{{ __('dashboard.search_teacher_account') }}">
                         </div>
                     </div>
                 </div>
@@ -126,9 +126,9 @@
                         <thead>
                             <tr>
                                 <th width="60" class="ps-3">No</th>
-                                <th>Nama Guru</th>
-                                <th>Username Akun</th>
-                                <th class="text-center">Aksi</th>
+                                <th>{{ __('dashboard.teacher_name_col') }}</th>
+                                <th>{{ __('dashboard.account_username') }}</th>
+                                <th class="text-center">{{ __('general.action') }}</th>
                             </tr>
                         </thead>
                         <tbody id="guruTableBody">
@@ -142,13 +142,13 @@
                                             <i class="bi bi-person-badge-fill me-1"></i> {{ $g->username }}
                                         </span>
                                     @else
-                                        <span class="text-muted small"><em>Belum memiliki akun</em></span>
+                                        <span class="text-muted small"><em>{{ __('dashboard.no_account') }}</em></span>
                                     @endif
                                 </td>
                                 <td class="text-center">
                                     @if(!$g->id_user)
                                         <button class="btn btn-success btn-sm px-3 rounded-pill" data-bs-toggle="modal" data-bs-target="#modalTambah{{ $g->id_guru }}">
-                                            <i class="bi bi-person-plus-fill me-1"></i> Buat Akun
+                                            <i class="bi bi-person-plus-fill me-1"></i> {{ __('dashboard.create_account') }}
                                         </button>
                                     @else
                                         <button class="btn btn-outline-success btn-sm me-1" data-bs-toggle="modal" data-bs-target="#modalEdit{{ $g->id_user }}">
@@ -156,7 +156,7 @@
                                         </button>
                                         <form action="{{ route('akun-guru.destroy', $g->id_user) }}" method="POST" class="d-inline">
                                             @csrf @method('DELETE')
-                                            <button class="btn btn-outline-danger btn-sm" onclick="return confirm('Hapus akun login guru ini?')">
+                                            <button class="btn btn-outline-danger btn-sm" onclick="return confirm(@json(__('dashboard.confirm_delete_account')))">
                                                 <i class="bi bi-trash3-fill"></i>
                                             </button>
                                         </form>
@@ -182,31 +182,31 @@
                 <input type="hidden" name="id_guru" value="{{ $g->id_guru }}">
                 <div class="modal-content border-0 shadow">
                     <div class="modal-header bg-success text-white">
-                        <h5 class="modal-title fw-bold">Buat Akun: {{ $g->nama_guru }}</h5>
+                        <h5 class="modal-title fw-bold">{{ __('dashboard.create_account_for', ['name' => $g->nama_guru]) }}</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body p-4">
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Username</label>
-                            <input type="text" name="username" class="form-control" placeholder="Masukkan username" required>
+                            <label class="form-label fw-bold">{{ __('general.username') }}</label>
+                            <input type="text" name="username" class="form-control" placeholder="{{ __('dashboard.username_placeholder') }}" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Password</label>
+                            <label class="form-label fw-bold">{{ __('general.password') }}</label>
                             <div class="input-group">
-                                <input type="password" name="password" class="form-control password-field" placeholder="Min. 6 karakter" required>
+                                <input type="password" name="password" class="form-control password-field" placeholder="{{ __('dashboard.password_min') }}" required>
                                 <span class="input-group-text toggle-password"><i class="bi bi-eye"></i></span>
                             </div>
                         </div>
                         <div class="mb-0">
-                            <label class="form-label fw-bold">Konfirmasi Password</label>
+                            <label class="form-label fw-bold">{{ __('general.confirm_password') }}</label>
                             <div class="input-group">
-                                <input type="password" name="password_confirmation" class="form-control password-field" placeholder="Ulangi password" required>
+                                <input type="password" name="password_confirmation" class="form-control password-field" placeholder="{{ __('dashboard.repeat_password') }}" required>
                                 <span class="input-group-text toggle-password"><i class="bi bi-eye"></i></span>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer bg-light">
-                        <button type="submit" class="btn btn-success w-100 fw-bold py-2">Simpan Akun</button>
+                        <button type="submit" class="btn btn-success w-100 fw-bold py-2">{{ __('dashboard.save_account') }}</button>
                     </div>
                 </div>
             </form>
@@ -222,26 +222,26 @@
                 @csrf @method('PUT')
                 <div class="modal-content border-0 shadow">
                     <div class="modal-header bg-success text-white">
-                        <h5 class="modal-title fw-bold">Edit Akun: {{ $g->nama_guru }}</h5>
+                        <h5 class="modal-title fw-bold">{{ __('dashboard.edit_account_for', ['name' => $g->nama_guru]) }}</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body p-4">
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Username</label>
+                            <label class="form-label fw-bold">{{ __('general.username') }}</label>
                             <input type="text" name="username" class="form-control" value="{{ $g->username }}" required>
                         </div>
-                        <div class="mb-0 text-muted small mb-2"><em>Kosongkan password jika tidak ingin mengganti</em></div>
+                        <div class="mb-0 text-muted small mb-2"><em>{{ __('dashboard.leave_password_empty') }}</em></div>
                         <div class="input-group mb-2">
-                            <input type="password" name="password" class="form-control password-field" placeholder="Password baru">
+                            <input type="password" name="password" class="form-control password-field" placeholder="{{ __('dashboard.new_password_placeholder') }}">
                             <span class="input-group-text toggle-password"><i class="bi bi-eye"></i></span>
                         </div>
                         <div class="input-group">
-                            <input type="password" name="password_confirmation" class="form-control password-field" placeholder="Konfirmasi password baru">
+                            <input type="password" name="password_confirmation" class="form-control password-field" placeholder="{{ __('dashboard.repeat_new_password') }}">
                             <span class="input-group-text toggle-password"><i class="bi bi-eye"></i></span>
                         </div>
                     </div>
                     <div class="modal-footer bg-light">
-                        <button type="submit" class="btn btn-success w-100 fw-bold py-2">Update Akun</button>
+                        <button type="submit" class="btn btn-success w-100 fw-bold py-2">{{ __('dashboard.update_account') }}</button>
                     </div>
                 </div>
             </form>

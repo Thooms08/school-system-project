@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detail Kelas {{ $kelas->nama_kelas }}</title>
+    <title>{{ __('dashboard.class_detail', ['name' => $kelas->nama_kelas]) }}</title>
     @if(isset($sekolah->logo))
     <link rel="icon" type="image/png" href="{{ asset($sekolah->logo) }}">
     @else
@@ -28,15 +28,15 @@
             <div class="container-fluid">
                 <nav aria-label="breadcrumb" class="mb-4">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('kelas.index') }}" class="text-success"><i class="bi bi-arrow-left"></i>Kembali</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('kelas.index') }}" class="text-success"><i class="bi bi-arrow-left"></i>{{ __('dashboard.back_to_classes') }}</a></li>
                         <li class="breadcrumb-item active">{{ $kelas->nama_kelas }}</li>
                     </ol>
                 </nav>
 
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h3 class="fw-bold text-success"><i class="bi bi-door-open me-2"></i>Kelas: {{ $kelas->nama_kelas }}</h3>
+                    <h3 class="fw-bold text-success"><i class="bi bi-door-open me-2"></i>{{ __('dashboard.class_detail', ['name' => $kelas->nama_kelas]) }}</h3>
                     <button class="btn btn-success px-4" data-bs-toggle="modal" data-bs-target="#modalTambahMurid">
-                        <i class="bi bi-person-plus me-2"></i>+ Tambah Murid
+                        <i class="bi bi-person-plus me-2"></i>{{ __('dashboard.add_student') }}
                     </button>
                 </div>
 
@@ -45,15 +45,15 @@
                 @endif
 
                 <div class="card p-4">
-                    <h6 class="fw-bold mb-4">Daftar Murid Terdaftar</h6>
+                    <h6 class="fw-bold mb-4">{{ __('dashboard.enrolled_students') }}</h6>
                     <div class="table-responsive">
                         <table class="table align-middle">
                             <thead class="table-light">
                                 <tr>
-                                    <th>No</th>
-                                    <th>Nama Murid</th>
-                                    <th>NISN</th>
-                                    <th class="text-center">Aksi</th>
+                                    <th>{{ __('general.no') }}</th>
+                                    <th>{{ __('dashboard.student_name_col') }}</th>
+                                    <th>{{ __('dashboard.nisn') }}</th>
+                                    <th class="text-center">{{ __('general.action') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -65,15 +65,15 @@
                                     <td class="text-center">
                                         <form action="{{ route('kelas.removeStudent', $m->id) }}" method="POST">
                                             @csrf @method('DELETE')
-                                            <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Keluarkan murid ini?')">
-                                                <i class="bi bi-x-circle me-1"></i> Keluarkan
+                                            <button class="btn btn-sm btn-outline-danger" onclick="return confirm(@json(__('dashboard.confirm_remove_student')))">
+                                                <i class="bi bi-x-circle me-1"></i> {{ __('dashboard.remove_student') }}
                                             </button>
                                         </form>
                                     </td>
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="4" class="text-center p-5 text-muted">Belum ada murid di kelas ini.</td>
+                                    <td colspan="4" class="text-center p-5 text-muted">{{ __('dashboard.no_students_in_class') }}</td>
                                 </tr>
                                 @endforelse
                             </tbody>
@@ -88,26 +88,26 @@
         <div class="modal-dialog modal-md">
             <div class="modal-content border-0 shadow">
                 <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title fw-bold">Pilih Murid Untuk Kelas Ini</h5>
+                    <h5 class="modal-title fw-bold">{{ __('dashboard.select_student_modal') }}</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="input-group mb-3">
                         <span class="input-group-text"><i class="bi bi-search"></i></span>
-                        <input type="text" id="searchMurid" class="form-control" placeholder="Cari nama atau nisn...">
+                        <input type="text" id="searchMurid" class="form-control" placeholder="{{ __('dashboard.search_student') }}">
                     </div>
                     <div style="max-height: 400px; overflow-y: auto;">
                         @foreach($muridTersedia as $mt)
                         <div class="student-select-item p-3 border rounded mb-2 d-flex justify-content-between align-items-center" data-name="{{ strtolower($mt->nama_murid) }} {{ $mt->nisn }}">
                             <div>
                                 <div class="fw-bold">{{ $mt->nama_lengkap }}</div>
-                                <small class="text-muted">NISN: {{ $mt->nisn }}</small>
+                                <small class="text-muted">{{ __('dashboard.nisn') }}: {{ $mt->nisn }}</small>
                             </div>
                             <form action="{{ route('kelas.addStudent') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="id_kelas" value="{{ $kelas->id }}">
                                 <input type="hidden" name="id_murid" value="{{ $mt->id }}">
-                                <button type="submit" class="btn btn-sm btn-success">Pilih</button>
+                                <button type="submit" class="btn btn-sm btn-success">{{ __('general.choose') }}</button>
                             </form>
                         </div>
                         @endforeach

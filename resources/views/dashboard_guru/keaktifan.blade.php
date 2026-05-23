@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Guru</title>
+    <title>{{ __('dashboard.activeness_title') }}</title>
     @if(isset($sekolah->logo))
     <link rel="icon" type="image/png" href="{{ asset($sekolah->logo) }}">
     @else
@@ -34,8 +34,8 @@
             <div class="d-flex align-items-center mb-4">
                 <button type="button" id="sidebarCollapse" class="btn"><i class="bi bi-list fs-4"></i></button>
                 <div class="ms-3">
-                    <h4 class="mb-0 fw-bold text-dark">Keaktifan</h4>
-                    <p class="text-muted small mb-0">Input & Pantau Kedisiplinan Murid</p>
+                    <h4 class="mb-0 fw-bold text-dark">{{ __('dashboard.activeness_title') }}</h4>
+                    <p class="text-muted small mb-0">{{ __('dashboard.activeness_subtitle') }}</p>
                 </div>
             </div>
 
@@ -46,14 +46,14 @@
             @endif
 
             <div class="card p-4 mb-4">
-                <h5 class="fw-bold mb-4 text-success"><i class="bi bi-plus-circle me-2"></i>Input Keaktifan Baru</h5>
+                <h5 class="fw-bold mb-4 text-success"><i class="bi bi-plus-circle me-2"></i>{{ __('dashboard.input_activeness') }}</h5>
                 <form action="{{ route('guru.keaktifan.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="row mb-4">
                         <div class="col-md-5">
-                            <label class="form-label">Pilih Kelas</label>
+                            <label class="form-label">{{ __('dashboard.select_class_label') }}</label>
                             <select class="form-select border-success" name="id_kelas" id="kelasSelect" required>
-                                <option value="">-- Pilih Kelas --</option>
+                                <option value="">{{ __('dashboard.select_class_option2') }}</option>
                                 @foreach($kelas as $k)
                                     <option value="{{ $k->id }}">{{ $k->nama_kelas }}</option>
                                 @endforeach
@@ -64,17 +64,17 @@
                     <div id="keaktifanForm" style="display:none">
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
-                                <label class="form-label">Nama Kegiatan</label>
+                                <label class="form-label">{{ __('dashboard.activity_name_label') }}</label>
                                 <input type="text" name="nama_keaktifan" class="form-control" required>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Keterangan</label>
+                                <label class="form-label">{{ __('dashboard.notes_label') }}</label>
                                 <input type="text" name="keterangan" class="form-control">
                             </div>
                         </div>
 
                         <div class="mb-4">
-                            <label class="form-label">Pilih Murid yang <span class="text-danger fw-bold">TIDAK MELAKUKAN</span> Keaktifan</label>
+                            <label class="form-label">{!! __('dashboard.select_inactive_students') !!}</label>
                             <div class="checklist-box" id="studentContainer">
                                 </div>
                         </div>
@@ -83,14 +83,14 @@
                             <div class="col-md-12">
                                 <div class="upload-box" id="uploadTrigger">
                                     <i class="bi bi-camera fs-2 text-success"></i>
-                                    <p class="mb-0" id="fileName">Upload Foto Dokumentasi</p>
+                                    <p class="mb-0" id="fileName">{{ __('dashboard.upload_photo') }}</p>
                                     <input type="file" name="foto" id="fotoInput" class="d-none">
                                 </div>
                             </div>
                         </div>
 
                         <div class="text-end">
-                            <button type="submit" class="btn btn-success px-5 rounded-pill shadow">Simpan Data</button>
+                            <button type="submit" class="btn btn-success px-5 rounded-pill shadow">{{ __('dashboard.save_data_btn') }}</button>
                         </div>
                     </div>
                 </form>
@@ -99,12 +99,12 @@
             <div class="card p-4">
                 <div class="d-flex justify-content-between align-items-center mb-4 row">
                     <div class="col-md-6">
-                        <h5 class="fw-bold mb-0">Riwayat Keaktifan Murid</h5>
+                        <h5 class="fw-bold mb-0">{{ __('dashboard.activeness_history') }}</h5>
                     </div>
                     <div class="col-md-4">
                         <form action="{{ route('guru.keaktifan') }}" method="GET" class="input-group">
                             <input type="date" name="tanggal" class="form-control" value="{{ $filterTanggal }}">
-                            <button class="btn btn-success" type="submit"><i class="bi bi-filter"></i> Filter</button>
+                            <button class="btn btn-success" type="submit"><i class="bi bi-filter"></i> {{ __('general.filter') }}</button>
                         </form>
                     </div>
                 </div>
@@ -113,12 +113,12 @@
                     <table class="table table-hover">
                         <thead class="table-light">
                             <tr>
-                                <th>Nama Murid</th>
-                                <th>Kelas</th>
-                                <th>Kegiatan</th>
-                                <th class="text-center">Keaktifan</th>
-                                <th>Tanggal</th>
-                                <th class="text-center">Aksi</th> 
+                                <th>{{ __('dashboard.student_col') }}</th>
+                                <th>{{ __('dashboard.class_col') }}</th>
+                                <th>{{ __('dashboard.activity_col') }}</th>
+                                <th class="text-center">{{ __('dashboard.activeness_col') }}</th>
+                                <th>{{ __('dashboard.date_col2') }}</th>
+                                <th class="text-center">{{ __('general.action') }}</th> 
                             </tr>
                         </thead>
                         <tbody>
@@ -142,7 +142,7 @@
                                 </td>
                             </tr>
                             @empty
-                            <tr><td colspan="5" class="text-center text-muted py-4">Tidak ada data keaktifan pada tanggal ini.</td></tr>
+                            <tr><td colspan="6" class="text-center text-muted py-4">{{ __('dashboard.no_activeness_data') }}</td></tr>
                             @endforelse
                         </tbody>
                     </table>
@@ -158,27 +158,27 @@
             @csrf @method('PUT')
             <div class="modal-content border-0 shadow">
                 <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title fw-bold">Edit Status Keaktifan</h5>
+                    <h5 class="modal-title fw-bold">{{ __('dashboard.edit_activeness') }}</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4">
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Nama Kegiatan</label>
+                        <label class="form-label fw-bold">{{ __('dashboard.activity_name_label') }}</label>
                         <input type="text" name="nama_keaktifan" id="editNama" class="form-control" required>
                     </div>
                     <div class="mb-4">
-                        <label class="form-label fw-bold">Daftar Murid (Ceklis yang <span class="text-danger">TIDAK AKTIF</span>)</label>
+                        <label class="form-label fw-bold">{!! __('dashboard.edit_inactive_label') !!}</label>
                         <div class="checklist-box border p-3" id="editStudentContainer" style="max-height: 300px; overflow-y: auto;">
                             </div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Keterangan</label>
+                        <label class="form-label fw-bold">{{ __('dashboard.notes_edit_label') }}</label>
                         <textarea name="keterangan" id="editKeterangan" class="form-control" rows="2"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer bg-light">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-success px-4">Simpan Perubahan</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('dashboard.cancel_btn2') }}</button>
+                    <button type="submit" class="btn btn-success px-4">{{ __('dashboard.save_changes_btn2') }}</button>
                 </div>
             </div>
         </form>
@@ -194,7 +194,7 @@
 
         if (classId) {
             form.style.display = 'block';
-            container.innerHTML = 'Memuat...';
+            container.innerHTML = @json(__('dashboard.loading_msg'));
             fetch(`{{ route('murid.getByKelas') }}?kelas_id=${classId}`)
                 .then(res => res.json())
                 .then(data => {
@@ -222,7 +222,7 @@
     // Set Action URL
     form.action = `/keaktifan_guru/${id}`;
     
-    container.innerHTML = 'Memuat data...';
+    container.innerHTML = @json(__('dashboard.loading_data'));
     
     // Buka Modal
     const modal = new bootstrap.Modal(document.getElementById('modalEdit'));

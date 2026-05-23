@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pendaftaran Berhasil</title>
+    <title>{{ __('dashboard.ppdb_success_title') }}</title>
     @if(isset($sekolah->logo))
     <link rel="icon" type="image/png" href="{{ asset($sekolah->logo) }}">
     @else
@@ -22,15 +22,15 @@
         <div class="icon-box">
             <i class="bi bi-check-circle-fill"></i>
         </div>
-        <h2 class="fw-bold text-success">Pendaftaran Berhasil!</h2>
+        <h2 class="fw-bold text-success">{{ __('dashboard.ppdb_success_title') }}</h2>
         <p class="text-muted mt-3">
-            Data calon siswa telah kami terima dan saat ini dalam status <strong>PENDING</strong>.
+            {!! __('dashboard.ppdb_success_msg') !!}
         </p>
         <p class="text-muted">
-            Mohon menunggu informasi selanjutnya. Admin akan melakukan konfirmasi data Anda segera.
+            {{ __('dashboard.ppdb_success_wait') }}
         </p>
         <div class="mt-4">
-            <a href="/" class="btn btn-outline-success px-4 rounded-pill">Kembali ke Beranda</a>
+            <a href="/" class="btn btn-outline-success px-4 rounded-pill">{{ __('dashboard.back_to_home_link') }}</a>
         </div>
     </div>
 </body>

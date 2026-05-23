@@ -30,7 +30,7 @@ class WaliPelanggaranController extends Controller
             ->first();
 
         if (!$murid) {
-            return response()->json(['error' => 'Data murid tidak ditemukan'], 404);
+            return response()->json(['error' => __('messages.student_not_found')], 404);
         }
 
         // 2. Query Pelanggaran - Menggunakan created_at sebagai pengganti tanggal
